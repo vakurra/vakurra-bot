@@ -1,0 +1,77 @@
+services:
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: vakurra_bot_db
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  bot:
+    build:
+      context: ..
+      dockerfile: infra/docker/prod/Dockerfile
+
+    container_name: vakurra_bot
+
+    env_file:
+      - ../.env
+
+    restart: unless-stopped
+
+    command: sh -c "alembic -c infra/alembic.ini upgrade head && python -m backend.bot.main"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: ..
+      dockerfile: infra/docker/prod/Dockerfile
+
+    container_name: vakurra_api
+
+    restart: unless-stopped
+
+    env_file:
+      - ../.env
+
+    working_dir: /app
+
+    command: uvicorn backend.api.main:app --host 0.0.0.0 --port 8000
+
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: infra/docker/frontend/prod.Dockerfile
+
+    container_name: vakurra_frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:8080:80"
+
+volumes:
+  postgres_data:

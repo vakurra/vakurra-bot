@@ -1,0 +1,18 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Бот
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+OWNER_ID = int(os.getenv("OWNER_ID"))
+
+# БД
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
+
+# Публичный HTTPS-адрес Mini App. В локальной разработке может быть пустым.
+WEB_APP_URL = os.getenv("WEB_APP_URL", "").rstrip("/")
