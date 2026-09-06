@@ -6,7 +6,7 @@ from typing import Any, Awaitable, Callable, Dict, Optional, Union
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message
 from cachetools import TTLCache
-from backend.bot.services.bot.text import TextService
+from backend.bot.services.text import TextService
 
 
 EventType = Union[

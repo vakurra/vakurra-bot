@@ -2,11 +2,11 @@ from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from backend.bot.services.bot.text import TextService
+from backend.bot.services.text import TextService
 from backend.shared.database.session import SessionLocal
 from backend.bot.keyboards.inline.start import start_inline_kb
-from backend.bot.services.db.user import UserService
-from backend.bot.services.db.ad import AdService
+from backend.shared.services.user import UserService
+from backend.shared.services.ad import AdService
 
 
 start_router = Router()

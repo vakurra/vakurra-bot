@@ -1,6 +1,6 @@
 from aiogram import BaseMiddleware
 
-from backend.bot.services.bot.text import TextService
+from backend.bot.services.text import TextService
 
 
 class LocalizationMiddleware(BaseMiddleware):

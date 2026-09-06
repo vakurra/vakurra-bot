@@ -13,12 +13,12 @@ class UserService:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-
     async def get_by_id(self, user_id: int) -> User | None:
         """Возвращает пользователя по Telegram ID."""
 
-        return await self.session.scalar(select(User).where(User.id == user_id))
-
+        return await self.session.scalar(
+            select(User).where(User.id == user_id)
+        )
 
     async def get_all(self) -> list[User]:
         """Возвращает всех пользователей."""
@@ -28,11 +28,13 @@ class UserService:
 
         return list(result.all())
 
-
     async def get_new(self, days: int) -> list[User]:
         """Возвращает пользователей, зарегистрированных за последние N дней."""
 
-        since = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=days)
+        since = (
+            datetime.now(timezone.utc).replace(tzinfo=None)
+            - timedelta(days=days)
+        )
 
         stmt = (
             select(User)
@@ -44,7 +46,6 @@ class UserService:
 
         return list(result.all())
 
-    
     async def get_admins(self) -> list[User]:
         """Возвращает всех администраторов."""
 
@@ -52,7 +53,6 @@ class UserService:
         result = await self.session.scalars(stmt)
 
         return list(result.all())
-    
 
     async def create(
         self,
@@ -70,4 +70,22 @@ class UserService:
 
         self.session.add(user)
         await self.session.commit()
+
         return user
+
+    async def get_or_create(
+        self,
+        tg_user: TgUser,
+        referred_by: str | None = None,
+    ) -> User:
+        """Возвращает существующего пользователя или создает нового."""
+
+        user = await self.get_by_id(tg_user.id)
+
+        if user is not None:
+            return user
+
+        return await self.create(
+            tg_user=tg_user,
+            referred_by=referred_by,
+        )

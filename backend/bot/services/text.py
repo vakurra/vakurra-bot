@@ -21,7 +21,7 @@ from backend.bot.constants import emoji
 
 class TextService:
     def __init__(self, locale: str = "ru") -> None:
-        locales = Path(__file__).resolve().parents[2] / "locales"
+        locales = Path(__file__).resolve().parents[1] / "locales"
         loader = FluentResourceLoader(str(locales))
 
         self._fluent = FluentLocalization(

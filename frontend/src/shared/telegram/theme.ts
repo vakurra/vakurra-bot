@@ -1,14 +1,8 @@
-export type ThemeScheme = "light" | "dark";
-
-type TelegramThemeParams = Record<string, string | undefined>;
-
-type TelegramWebApp = {
-  colorScheme?: ThemeScheme;
-  themeParams?: TelegramThemeParams;
-  ready: () => void;
-  expand: () => void;
-  onEvent?: (event: "themeChanged", handler: () => void) => void;
-};
+import type {
+  TelegramThemeParams,
+  TelegramWebApp,
+  ThemeScheme,
+} from "./types";
 
 const palettes: Record<ThemeScheme, Record<string, string>> = {
   light: {
@@ -77,7 +71,7 @@ function applyTheme(
 }
 
 export function initializeTelegramTheme() {
-  const telegram = window.Telegram?.WebApp as TelegramWebApp | undefined;
+  const telegram = window.Telegram?.WebApp;
 
   if (!telegram) {
     applyTheme(getSystemScheme());

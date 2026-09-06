@@ -4,7 +4,7 @@ from aiogram.types import InputRichMessage, Message, CallbackQuery
 from backend.bot.middlewares.admin import AdminMiddleware
 
 from backend.bot.keyboards.reply.admin_menu import admin_reply_kb
-from backend.bot.services.bot.text import TextService
+from backend.bot.services.text import TextService
 
 
 admin_router = Router()

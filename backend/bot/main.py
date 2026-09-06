@@ -11,7 +11,7 @@ from backend.bot.commands import set_bot_commands
 from backend.shared.config import settings
 from backend.bot.handlers import get_routers
 from backend.shared.database.session import engine
-from backend.bot.services.bot.text import TextService
+from backend.bot.services.text import TextService
 
 
 text_service = TextService()

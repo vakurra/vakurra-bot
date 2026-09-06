@@ -18,17 +18,22 @@ export function App() {
       });
 
       try {
-        await Promise.all([
+        const [, user] = await Promise.all([
           api.health(),
+          api.me(),
           minimumSplashTime,
         ]);
 
         if (!cancelled) {
-          setStatus("API доступен. Каталог готов к развитию.");
+          setStatus(
+            `Вы вошли как ${user.first_name ?? user.username ?? user.id}`,
+          );
         }
-      } catch {
+      } catch (error) {
+        console.error("Application initialization failed:", error);
+
         if (!cancelled) {
-          setStatus("API пока недоступен.");
+          setStatus("Не удалось авторизоваться через Telegram.");
         }
       } finally {
         if (!cancelled) {

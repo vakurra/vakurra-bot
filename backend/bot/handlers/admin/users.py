@@ -4,8 +4,8 @@ from aiogram.types import CallbackQuery, InputRichMessage, Message
 from backend.shared.database.session import SessionLocal
 from backend.bot.keyboards.inline.admin_users import get_admin_users_kb
 from backend.bot.middlewares.admin import AdminMiddleware
-from backend.bot.services.bot.text import TextService
-from backend.bot.services.db.user import UserService
+from backend.bot.services.text import TextService
+from backend.shared.services.user import UserService
 
 
 admin_users_router = Router()

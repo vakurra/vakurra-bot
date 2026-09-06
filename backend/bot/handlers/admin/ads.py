@@ -11,8 +11,8 @@ from backend.bot.keyboards.inline.ads import (
     get_delete_ad_inline_kb,
 )
 from backend.bot.middlewares.admin import AdminMiddleware
-from backend.bot.services.bot.text import TextService
-from backend.bot.services.db.ad import AdService
+from backend.bot.services.text import TextService
+from backend.shared.services.ad import AdService
 
 
 ads_router = Router()
