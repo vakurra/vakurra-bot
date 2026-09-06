@@ -7,6 +7,7 @@ Telegram-бот для поиска других ботов. Позволяет 
 
 ## Структура
 
+```text
 vakurra_bot/
 │
 ├── backend/
@@ -32,7 +33,7 @@ vakurra_bot/
 │   └── docker-compose.*
 │
 └── README.md
-
+```
 
 ## Стек
 
