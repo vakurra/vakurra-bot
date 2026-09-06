@@ -8,7 +8,7 @@ from backend.bot.middlewares.throttling import ThrottlingMiddleware
 from backend.bot.middlewares.localization import LocalizationMiddleware
 
 from backend.bot.commands import set_bot_commands
-from backend.shared.config import BOT_TOKEN
+from backend.shared.config import settings
 from backend.bot.handlers import get_routers
 from backend.shared.database.session import engine
 from backend.bot.services.bot.text import TextService
@@ -18,7 +18,7 @@ text_service = TextService()
 
 # Создание бота
 bot = Bot(
-    token=BOT_TOKEN,
+    token=settings.bot_token,
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 

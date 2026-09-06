@@ -10,3 +10,4 @@ class Base(DeclarativeBase):
             for column in self.__table__.columns
         )
         return f"{self.__class__.__name__}({attrs})"
+        

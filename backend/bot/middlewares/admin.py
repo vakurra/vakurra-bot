@@ -4,7 +4,7 @@ from typing import Any
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
-from backend.shared.config import OWNER_ID
+from backend.shared.config import settings
 
 
 class AdminMiddleware(BaseMiddleware):
@@ -21,7 +21,7 @@ class AdminMiddleware(BaseMiddleware):
     ) -> Any:
         user = data.get("event_from_user")
 
-        if user is None or user.id != OWNER_ID:
+        if user is None or user.id != settings.owner_id:
             return None
 
         return await handler(event, data)

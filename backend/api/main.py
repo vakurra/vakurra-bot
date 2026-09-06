@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api.core.config import settings
+from backend.shared.config import settings
 from backend.api.routes.health import router as health_router
 
 

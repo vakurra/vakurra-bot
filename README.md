@@ -7,17 +7,31 @@ Telegram-бот для поиска других ботов. Позволяет 
 
 ## Структура
 
-- `backend/api/` — HTTP API на FastAPI: точка входа, настройки API и HTTP-маршруты.
-- `backend/modules/` — бизнес-модули приложения: каталог, пользователи, объявления.
-- `frontend/` — отдельное React/TypeScript-приложение. Оно не импортирует Python-код
-  и общается с backend только через HTTP API.
-- `backend/shared/`, `infra/migrations/` — общая persistence-часть приложений.
-- `backend/bot/` — Telegram-бот: handlers, keyboards, middlewares и bot services.
-  Это отдельный канал, но он использует ту же базу и доменные сервисы.
-
-Новые функции следует добавлять вертикальными модулями: например,
-`backend/modules/catalog/` с моделями, схемами, репозиториями, сервисами и API-маршрутами
-каталога, а не складывать всю логику в один файл.
+vakurra_bot/
+│
+├── backend/
+│   ├── api/                  ← HTTP API
+│   ├── bot/                  ← Telegram bot
+│   └── shared/               ← общая инфраструктура
+│       ├── config.py
+│       └── database/
+│           └── models/       ← ВСЕ DB models здесь
+│
+├── frontend/                 ← Telegram Mini App
+│   └── src/
+│       ├── app/
+│       ├── pages/
+│       ├── shared/
+│       │   ├── api/
+│       │   └── telegram/
+│       └── styles/
+│
+├── infra/
+│   ├── docker/
+│   ├── migrations/
+│   └── docker-compose.*
+│
+└── README.md
 
 
 ## Стек
