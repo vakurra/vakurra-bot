@@ -4,7 +4,7 @@ type HomePageProps = {
   status: string;
 };
 
-export function HomePage({ status }: HomePageProps) {
+export function TopPage({ status }: HomePageProps) {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>

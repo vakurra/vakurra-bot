@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { AppLayout } from "./AppLayout";
 import { SplashScreen } from "./SplashScreen";
 import { api } from "../shared/api/client";
-import { HomePage } from "../pages/home/HomePage";
+import { TopPage } from "../pages/top/TopPage";
 
-const MINIMUM_SPLASH_TIME = 1000;
+const MINIMUM_SPLASH_TIME = 1200;
 
 export function App() {
   const [isInitializing, setIsInitializing] = useState(true);
@@ -57,7 +57,7 @@ export function App() {
 
   return (
     <AppLayout>
-      <HomePage status={status} />
+      <TopPage status={status} />
     </AppLayout>
   );
 }
