@@ -1,10 +1,10 @@
-import styles from "./HomePage.module.css";
+import styles from "./TopPage.module.css";
 
-type HomePageProps = {
+type TopPageProps = {
   status: string;
 };
 
-export function TopPage({ status }: HomePageProps) {
+export function TopPage({ status }: TopPageProps) {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
