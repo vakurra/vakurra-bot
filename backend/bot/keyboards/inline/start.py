@@ -13,7 +13,7 @@ start_inline_kb = InlineKeyboardMarkup(
                 text="Войти в приложение",
                 icon_custom_emoji_id=emoji.FOLLOW.custom_id,
                 style="success",
-                web_app=WebAppInfo(url="https://throwing-investigator-advisors-filtering.trycloudflare.com"),
+                web_app=WebAppInfo(url="https://bbs-characteristic-federal-implies.trycloudflare.com"),
             )
         ]
     ]

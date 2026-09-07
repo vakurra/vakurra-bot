@@ -55,7 +55,8 @@ vakurra_bot/
    Frontend доступен локальному reverse proxy на `127.0.0.1:8080`, API — на `127.0.0.1:8000`.
 
 Миграции Alembic применяются контейнером бота перед запуском.
-
+`docker exec -it vakurra_api alembic -c infra/alembic.ini revision --autogenerate -m "your message"`
+`docker exec -it vakurra_api alembic -c infra/alembic.ini upgrade head`
 Точки входа приложений:
 
 - `python -m backend.bot.main` — Telegram-бот.
