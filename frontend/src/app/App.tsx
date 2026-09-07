@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
+import { AppLayout } from "./AppLayout";
 import { SplashScreen } from "./SplashScreen";
 import { api } from "../shared/api/client";
+import { HomePage } from "../pages/home/HomePage";
 
 const MINIMUM_SPLASH_TIME = 1000;
 
@@ -54,17 +56,8 @@ export function App() {
   }
 
   return (
-    <main className="page-shell">
-      <section className="hero">
-        <p className="eyebrow">Telegram Mini App</p>
-        <h1>Vakurra</h1>
-        <p className="subtitle">Каталог полезных Telegram-ботов</p>
-      </section>
-
-      <section className="status-card">
-        <strong>Приложение подключено</strong>
-        <p>{status}</p>
-      </section>
-    </main>
+    <AppLayout>
+      <HomePage status={status} />
+    </AppLayout>
   );
 }

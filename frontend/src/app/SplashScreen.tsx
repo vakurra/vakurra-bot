@@ -1,14 +1,16 @@
+import styles from "./SplashScreen.module.css";
+
 export function SplashScreen() {
   return (
-    <main className="splash-screen">
-      <div className="splash-content">
-        <div className="splash-logo">V</div>
+    <main className={styles.screen}>
+      <div className={styles.content}>
+        <div className={styles.logo}>V</div>
 
-        <h1>Vakurra</h1>
+        <h1 className={styles.title}>Vakurra</h1>
 
-        <p>Каталог полезных Telegram-ботов</p>
+        <p className={styles.description}>Каталог полезных Telegram-ботов</p>
 
-        <div className="splash-loader" aria-label="Загрузка" />
+        <div className={styles.loader} role="status" aria-label="Загрузка" />
       </div>
     </main>
   );

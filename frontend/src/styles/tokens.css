@@ -1,0 +1,25 @@
+:root {
+  --app-bg: #f4f7fb;
+  --app-surface: #ffffff;
+  --app-surface-muted: #eef2f7;
+  --app-text: #18202a;
+  --app-text-muted: #718096;
+  --app-border: #dfe6ef;
+  --app-accent: #2f80ed;
+  --app-accent-text: #ffffff;
+  --app-danger: #d64545;
+  --app-shadow: 0 8px 30px #18202a14;
+}
+
+[data-theme="dark"] {
+  --app-bg: #17212b;
+  --app-surface: #202b36;
+  --app-surface-muted: #2b3947;
+  --app-text: #f5f7fa;
+  --app-text-muted: #aab7c4;
+  --app-border: #344454;
+  --app-accent: #64a8ff;
+  --app-accent-text: #102030;
+  --app-danger: #ff7070;
+  --app-shadow: 0 8px 30px #00000040;
+}

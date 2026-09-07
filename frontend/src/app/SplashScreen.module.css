@@ -1,0 +1,55 @@
+.screen {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  padding: 24px;
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logo {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 20px;
+  place-items: center;
+  border-radius: 20px;
+  background: var(--app-accent);
+  color: var(--app-accent-text);
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.description {
+  margin: 8px 0 24px;
+  color: var(--app-text-muted);
+  line-height: 1.5;
+}
+
+.loader {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--app-border);
+  border-top-color: var(--app-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
