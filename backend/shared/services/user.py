@@ -82,10 +82,18 @@ class UserService:
 
         user = await self.get_by_id(tg_user.id)
 
-        if user is not None:
-            return user
+        if user is None:
+            return await self.create(
+                tg_user=tg_user,
+                referred_by=referred_by,
+            )
 
-        return await self.create(
-            tg_user=tg_user,
-            referred_by=referred_by,
-        )
+        if user.username != tg_user.username:
+            user.username = tg_user.username
+
+        if user.first_name != tg_user.first_name:
+            user.first_name = tg_user.first_name
+
+        await self.session.commit()
+
+        return user
