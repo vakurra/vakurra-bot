@@ -1,22 +1,60 @@
 import styles from "./TopPage.module.css";
 
-type TopPageProps = {
-  status: string;
-};
-
-export function TopPage({ status }: TopPageProps) {
+export function TopPage() {
   return (
     <div className={styles.page}>
-      <section className={styles.hero}>
-        <p className={styles.eyebrow}>Telegram Mini App</p>
-        <h1 className={styles.title}>Vakurra</h1>
-        <p className={styles.subtitle}>Каталог полезных Telegram-ботов</p>
-      </section>
+      <h1 className={styles.title}>VakurraBot</h1>
 
-      <section className={styles.statusCard}>
-        <strong>Приложение подключено</strong>
-        <p className={styles.status}>{status}</p>
-      </section>
+      <div className={styles.palette}>
+        <section className={styles.example}>
+          <p className={styles.label}>Background</p>
+          <div className={styles.backgroundExample}>
+            Основной фон приложения
+          </div>
+        </section>
+
+        <section className={styles.example}>
+          <p className={styles.label}>Surface</p>
+          <div className={styles.surfaceExample}>
+            Поверхность / карточка
+          </div>
+        </section>
+
+        <section className={styles.example}>
+          <p className={styles.label}>Text</p>
+          <div className={styles.textExample}>
+            Основной текст
+          </div>
+        </section>
+
+        <section className={styles.example}>
+          <p className={styles.label}>Text muted</p>
+          <div className={styles.mutedExample}>
+            Второстепенный текст
+          </div>
+        </section>
+
+        <section className={styles.example}>
+          <p className={styles.label}>Border</p>
+          <div className={styles.borderExample}>
+            Граница элемента
+          </div>
+        </section>
+
+        <section className={styles.example}>
+          <p className={styles.label}>Accent</p>
+          <button className={styles.accentExample}>
+            Основная кнопка
+          </button>
+        </section>
+
+        <section className={styles.example}>
+          <p className={styles.label}>Danger</p>
+          <button className={styles.dangerExample}>
+            Опасное действие
+          </button>
+        </section>
+      </div>
     </div>
   );
 }

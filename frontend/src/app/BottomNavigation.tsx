@@ -1,9 +1,9 @@
 import styles from "./BottomNavigation.module.css";
 
 const navigationItems = [
-  { label: "Заглушка", icon: "?" },
+  { label: "Лента", icon: "?" },
   { label: "Поиск", icon: "⌕" },
-  { label: "Топ", icon: "🏆" },
+  { label: "ТОП", icon: "🏆" },
   { label: "Добавить", icon: "+" },
   { label: "Вы", icon: "●" },
 ];

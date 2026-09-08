@@ -21,8 +21,8 @@
   margin-bottom: 20px;
   place-items: center;
   border-radius: 20px;
-  background: var(--app-accent);
-  color: var(--app-accent-text);
+  background: var(--app-surface);
+  color: var(--app-text-accent);
   font-size: 36px;
   font-weight: 700;
 }
@@ -42,8 +42,8 @@
 .loader {
   width: 24px;
   height: 24px;
-  border: 3px solid var(--app-border);
-  border-top-color: var(--app-accent);
+  border: 3px solid var(--app-border-accent);
+  border-top-color: var(--app-surface);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
