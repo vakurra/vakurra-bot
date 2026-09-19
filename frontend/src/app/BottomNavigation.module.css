@@ -1,27 +1,39 @@
 .navigation {
   position: fixed;
+
   right: 20px;
-  bottom: 30px;
+  bottom: 35px;
   left: 20px;
+
   z-index: 100;
+
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  height: 70px;
-  background: var(--app-surface);
+
+  height: 65px;
+
+  background: var(--app-surface-gradient);
+  border: 1px solid var(--app-border);
   border-radius: 50px;
+
   -webkit-tap-highlight-color: transparent;
 }
 
 .item {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
+
   padding: 6px 2px;
+
   border: 0;
   background: transparent;
-  color: var(--app-text-muted);
+  color: var(--app-text);
 }
 
 .featured {
@@ -40,4 +52,32 @@
 .label {
   font-size: 13px;
   line-height: 1;
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  border: 1px solid var(--app-border);
+  border-radius: inherit;
+  background: var(--app-surface);
+
+  transform: translateX(-50%);
+
+  transition:
+    left 0.25s ease,
+    width 0.25s ease;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.indicatorFirst,
+.indicatorLast {
+  width: 20%;
+}
+
+.indicatorMiddle {
+  width: 25%;
 }

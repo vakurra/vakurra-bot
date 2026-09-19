@@ -30,6 +30,12 @@ select {
 
 button {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.96);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -23,14 +23,20 @@
 [data-theme="dark"] {
   --app-bg: #090f14;
 
-  --app-surface: #191e22;
+  --app-surface: #222c35;
   --app-surface-danger: #db3333;
+  --app-surface-gradient: radial-gradient(
+    circle at 50% 50%,
+    #1e2122 0%,
+    #1f2225 45%,
+    #18181a 100%
+  );
   
-  --app-border: #324352;
-  --app-border-accent: #5a98ce;
+  --app-border: #36383a;
+  --app-border-accent: #2d7cc2;
 
   --app-text: #e2ebf4;
-  --app-text-muted: #9aa6b2;
+  --app-text-muted: #9eabb8;
   --app-text-accent: #16e7e0;
   --app-text-gradient: linear-gradient(
     90deg,

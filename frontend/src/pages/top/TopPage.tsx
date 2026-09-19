@@ -3,7 +3,9 @@ import styles from "./TopPage.module.css";
 export function TopPage() {
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>VakurraBot</h1>
+      <header className={styles.header}>
+        <h1 className={styles.title}>VakurraBot</h1>
+      </header>
 
       <div className={styles.palette}>
         <section className={styles.example}>
