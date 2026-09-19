@@ -74,7 +74,7 @@
   border: 1px solid var(--app-border-accent);
   border-radius: 16px;
 
-  background: var(--app-surface-gradient);
+  background: var(--app-surface);
   color: var(--app-text);
 
   box-shadow: var(--app-shadow);
@@ -84,7 +84,7 @@
   padding: 24px;
   border-radius: 16px;
 
-  background: var(--app-surface-gradient);
+  background: var(--app-surface);
   color: var(--app-text);
 }
 
@@ -92,7 +92,7 @@
   padding: 24px;
   border-radius: 16px;
 
-  background: var(--app-surface-gradient);
+  background: var(--app-surface);
   color: var(--app-text-muted);
 }
 
@@ -101,7 +101,7 @@
   border: 1px solid var(--app-border);
   border-radius: 16px;
 
-  background: var(--app-surface-gradient);
+  background: var(--app-surface);
   color: var(--app-text);
 }
 
@@ -112,7 +112,7 @@
   border: 0;
   border-radius: 14px;
 
-  background: var(--app-surface-gradient);
+  background: var(--app-surface);
   color: var(--app-text-accent);
 
   font: inherit;
