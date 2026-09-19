@@ -3,13 +3,44 @@ import { useEffect, useState } from "react";
 import { AppLayout } from "./AppLayout";
 import { SplashScreen } from "./SplashScreen";
 import { api } from "../shared/api/client";
+import { AddPage } from "../pages/add/AddPage";
+import { FeedPage } from "../pages/feed/FeedPage";
+import { ProfilePage } from "../pages/profile/ProfilePage";
+import { SearchPage } from "../pages/search/SearchPage";
 import { TopPage } from "../pages/top/TopPage";
 
 const MINIMUM_SPLASH_TIME = 1200;
 
+type Page = "feed" | "search" | "top" | "add" | "profile";
+type User = {
+  id: number;
+  username: string | null;
+  first_name: string | null;
+};
+
 export function App() {
   const [isInitializing, setIsInitializing] = useState(true);
-  const [status, setStatus] = useState("Проверяем API…");
+  const [currentPage, setCurrentPage] = useState<Page>("top");
+  const [user, setUser] = useState<User | null>(null);
+  
+  function renderPage() {
+    switch (currentPage) {
+      case "feed":
+        return <FeedPage />;
+
+      case "search":
+        return <SearchPage />;
+
+      case "top":
+        return <TopPage />;
+
+      case "add":
+        return <AddPage />;
+
+      case "profile":
+        return <ProfilePage user={user} />;
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -20,23 +51,17 @@ export function App() {
       });
 
       try {
-        const [, user] = await Promise.all([
+        const [, currentUser] = await Promise.all([
           api.health(),
           api.me(),
           minimumSplashTime,
         ]);
 
         if (!cancelled) {
-          setStatus(
-            `Вы вошли как ${user.first_name ?? user.username ?? user.id}`,
-          );
+          setUser(currentUser);
         }
       } catch (error) {
         console.error("Application initialization failed:", error);
-
-        if (!cancelled) {
-          setStatus("Не удалось авторизоваться через Telegram.");
-        }
       } finally {
         if (!cancelled) {
           setIsInitializing(false);
@@ -56,8 +81,11 @@ export function App() {
   }
 
   return (
-    <AppLayout>
-      <TopPage status={status} />
+    <AppLayout
+      currentPage={currentPage}
+      onPageChange={setCurrentPage}
+    >
+      {renderPage()}
     </AppLayout>
   );
 }

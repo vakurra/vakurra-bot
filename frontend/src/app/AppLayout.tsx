@@ -3,16 +3,27 @@ import { ReactNode } from "react";
 import { BottomNavigation } from "./BottomNavigation";
 import styles from "./AppLayout.module.css";
 
+type Page = "feed" | "search" | "top" | "add" | "profile";
+
 type AppLayoutProps = {
   children: ReactNode;
+  currentPage: Page;
+  onPageChange: (page: Page) => void;
 };
 
-export function AppLayout({ children }: AppLayoutProps) {
+export function AppLayout({
+  children,
+  currentPage,
+  onPageChange,
+}: AppLayoutProps) {
   return (
     <div className={styles.layout}>
       <main className={styles.content}>{children}</main>
 
-      <BottomNavigation />
+      <BottomNavigation
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
     </div>
   );
 }

@@ -1,17 +1,27 @@
-import { useState } from "react";
-
 import styles from "./BottomNavigation.module.css";
 
+type Page = "feed" | "search" | "top" | "add" | "profile";
+
+type BottomNavigationProps = {
+  currentPage: Page;
+  onPageChange: (page: Page) => void;
+};
+
 const navigationItems = [
-  { label: "Лента", icon: "?" },
-  { label: "Поиск", icon: "⌕" },
-  { label: "ТОП", icon: "🏆" },
-  { label: "Новый", icon: "+" },
-  { label: "Вы", icon: "●" },
+  { page: "feed" as const, label: "Лента", icon: "?" },
+  { page: "search" as const, label: "Поиск", icon: "⌕" },
+  { page: "top" as const, label: "ТОП", icon: "🏆" },
+  { page: "add" as const, label: "Новый", icon: "+" },
+  { page: "profile" as const, label: "Вы", icon: "●" },
 ];
 
-export function BottomNavigation() {
-  const [activeIndex, setActiveIndex] = useState(2);
+export function BottomNavigation({
+  currentPage,
+  onPageChange,
+}: BottomNavigationProps) {
+  const activeIndex = navigationItems.findIndex(
+    (item) => item.page === currentPage,
+  );
 
   const indicatorClass =
     activeIndex === 0
@@ -31,13 +41,13 @@ export function BottomNavigation() {
 
       {navigationItems.map((item, index) => (
         <button
-          key={item.label}
+          key={item.page}
           type="button"
           className={`${styles.item} ${
             index === 2 ? styles.featured : ""
           }`}
-          onClick={() => setActiveIndex(index)}
-          aria-current={index === activeIndex ? "page" : undefined}
+          onClick={() => onPageChange(item.page)}
+          aria-current={item.page === currentPage ? "page" : undefined}
         >
           <span className={styles.icon}>{item.icon}</span>
           <span className={styles.label}>{item.label}</span>
