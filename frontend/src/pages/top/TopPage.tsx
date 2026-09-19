@@ -1,11 +1,11 @@
+import { PageHeader } from "../../shared/ui/PageHeader";
+
 import styles from "./TopPage.module.css";
 
 export function TopPage() {
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>VakurraBot</h1>
-      </header>
+      <PageHeader title="VakurraBot" />
 
       <div className={styles.palette}>
         <section className={styles.example}>

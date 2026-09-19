@@ -1,3 +1,9 @@
+import { PageHeader } from "../../shared/ui/PageHeader";
+
 export function AddPage() {
-  return <div>Новый</div>;
+  return (
+    <>
+      <PageHeader title="Добавить бота" />
+    </>
+  );
 }

@@ -8,6 +8,7 @@ export type TelegramWebApp = {
   initData?: string;
   ready: () => void;
   expand: () => void;
+  disableVerticalSwipes: () => void;
   onEvent?: (
     event: "themeChanged",
     handler: () => void,

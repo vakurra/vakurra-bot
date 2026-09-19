@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 
-import { AppLayout } from "./AppLayout";
-import { SplashScreen } from "./SplashScreen";
-import { api } from "../shared/api/client";
 import { AddPage } from "../pages/add/AddPage";
 import { FeedPage } from "../pages/feed/FeedPage";
 import { ProfilePage } from "../pages/profile/ProfilePage";
 import { SearchPage } from "../pages/search/SearchPage";
 import { TopPage } from "../pages/top/TopPage";
+import { api } from "../shared/api/client";
+
+import { AppLayout } from "./AppLayout";
+import { SplashScreen } from "./SplashScreen";
 
 const MINIMUM_SPLASH_TIME = 1200;
 
 type Page = "feed" | "search" | "top" | "add" | "profile";
-type User = {
+
+export type User = {
   id: number;
   username: string | null;
   first_name: string | null;
@@ -22,7 +24,7 @@ export function App() {
   const [isInitializing, setIsInitializing] = useState(true);
   const [currentPage, setCurrentPage] = useState<Page>("top");
   const [user, setUser] = useState<User | null>(null);
-  
+
   function renderPage() {
     switch (currentPage) {
       case "feed":

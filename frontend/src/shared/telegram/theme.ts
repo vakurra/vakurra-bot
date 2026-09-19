@@ -23,6 +23,7 @@ export function initializeTelegramTheme() {
 
   telegram.ready();
   telegram.expand();
+  telegram.disableVerticalSwipes();
 
   const updateTheme = () => {
     applyTheme(telegram.colorScheme ?? getSystemScheme());

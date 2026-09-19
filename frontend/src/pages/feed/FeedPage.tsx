@@ -1,3 +1,9 @@
+import { PageHeader } from "../../shared/ui/PageHeader";
+
 export function FeedPage() {
-  return <div>Лента</div>;
+  return (
+    <>
+      <PageHeader title="Лента" />
+    </>
+  );
 }

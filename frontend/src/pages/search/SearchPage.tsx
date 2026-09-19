@@ -1,3 +1,9 @@
+import { PageHeader } from "../../shared/ui/PageHeader";
+
 export function SearchPage() {
-  return <div>Поиск</div>;
+  return (
+    <>
+      <PageHeader title="Поиск" />
+    </>
+  );
 }
