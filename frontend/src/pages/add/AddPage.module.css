@@ -1,0 +1,73 @@
+.page {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: 130px 20px 120px;
+}
+
+.card {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--app-border);
+  border-radius: 24px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.title {
+  margin: 0;
+  color: var(--app-text-accent);
+  text-align: center;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.description {
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.label {
+  margin: 6px 10px -10px;
+  color: var(--app-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  outline: none;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font: inherit;
+}
+
+.input::placeholder {
+  color: var(--app-text-muted);
+  opacity: 0.7;
+}
+
+.input:focus {
+  border-color: var(--app-border-accent);
+}
+
+.button {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  background: var(--app-button);
+  color: var(--app-text);
+  font: inherit;
+  font-weight: 600;
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}

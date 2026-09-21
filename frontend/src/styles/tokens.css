@@ -30,13 +30,18 @@
     #18181a 100%
   );
   --app-surface-danger: #db3333;
-  
+
+  --app-button:
+    radial-gradient(circle at 20% 20%, #13c6c0, transparent 45%),
+    radial-gradient(circle at 80% 80%, #a745d8, transparent 50%),
+  #3567fe;
+
   --app-border: #36383a;
   --app-border-accent: #2d7cc2;
 
   --app-text: #e2ebf4;
   --app-text-muted: #9eabb8;
-  --app-text-accent: #16e7e0;
+  --app-text-accent: #1cfff7;
   --app-text-gradient: linear-gradient(
     90deg,
     #16e7e0 0%,
