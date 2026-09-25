@@ -14,7 +14,9 @@ config = context.config
 # Alembic работает через синхронный драйвер psycopg.
 config.set_main_option(
     "sqlalchemy.url",
-    DATABASE_URL.replace("postgresql+asyncpg", "postgresql+psycopg"),
+    DATABASE_URL.render_as_string(hide_password=False)
+    .replace("postgresql+asyncpg", "postgresql+psycopg")
+    .replace("%", "%%"),
 )
 
 # Interpret the config file for Python logging.

@@ -1,6 +1,6 @@
 import styles from "./BottomNavigation.module.css";
 
-type Page = "feed" | "search" | "top" | "add" | "profile";
+import type { Page } from "./App";
 
 type BottomNavigationProps = {
   currentPage: Page;

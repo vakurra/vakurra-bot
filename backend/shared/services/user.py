@@ -88,12 +88,17 @@ class UserService:
                 referred_by=referred_by,
             )
 
+        has_changes = False
+
         if user.username != tg_user.username:
             user.username = tg_user.username
+            has_changes = True
 
         if user.first_name != tg_user.first_name:
             user.first_name = tg_user.first_name
+            has_changes = True
 
-        await self.session.commit()
+        if has_changes:
+            await self.session.commit()
 
         return user

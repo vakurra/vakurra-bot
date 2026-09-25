@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { BottomNavigation } from "./BottomNavigation";
 import styles from "./AppLayout.module.css";
 
-type Page = "feed" | "search" | "top" | "add" | "profile";
+import type { Page } from "./App";
 
 type AppLayoutProps = {
   children: ReactNode;

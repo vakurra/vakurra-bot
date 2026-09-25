@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import os
 
 from dotenv import load_dotenv
@@ -24,19 +24,20 @@ class Settings:
     web_app_url: str = os.getenv("WEB_APP_URL", "").rstrip("/")
 
     # Telegram bot
-    bot_token: str | None = os.getenv("BOT_TOKEN")
+    bot_token: str | None = field(default_factory=lambda: os.getenv("BOT_TOKEN"), repr=False)
     owner_id: int = int(os.getenv("OWNER_ID", "0"))
 
     # Telegram API / Telethon
     telegram_api_id: int = int(os.getenv("TELEGRAM_API_ID", "0"))
-    telegram_api_hash: str = os.getenv("TELEGRAM_API_HASH", "")
+    telegram_api_hash: str = field(default_factory=lambda: os.getenv("TELEGRAM_API_HASH", ""), repr=False)
     
     # Database
     db_host: str = os.getenv("DB_HOST", "localhost")
     db_port: int = int(os.getenv("DB_PORT", "5432"))
     db_user: str = os.getenv("DB_USER", "")
-    db_password: str = os.getenv("DB_PASSWORD", "")
+    db_password: str = field(default_factory=lambda: os.getenv("DB_PASSWORD", ""), repr=False)
     db_name: str = os.getenv("DB_NAME", "")
+    media_dir: str = os.getenv("MEDIA_DIR", "/telegram_media")
 
 
 settings = Settings()

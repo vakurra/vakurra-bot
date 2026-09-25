@@ -12,7 +12,7 @@ import { SplashScreen } from "./SplashScreen";
 
 const MINIMUM_SPLASH_TIME = 1200;
 
-type Page = "feed" | "search" | "top" | "add" | "profile";
+export type Page = "feed" | "search" | "top" | "add" | "profile";
 
 export type User = {
   id: number;

@@ -49,7 +49,7 @@ def create_app() -> FastAPI:
 
     application.mount(
         "/media",
-        StaticFiles(directory="/telegram_media"),
+        StaticFiles(directory=settings.media_dir, check_dir=False),
         name="media",
     )
     application.include_router(health_router, prefix=settings.api_prefix)

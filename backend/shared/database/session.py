@@ -1,12 +1,17 @@
+from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from backend.shared.config import settings
 
 
 # Строка подключения к PostGRE через асинхронный драйвер.
-DATABASE_URL = (
-    f"postgresql+asyncpg://{settings.db_user}:{settings.db_password}"
-    f"@{settings.db_host}:{settings.db_port}/{settings.db_name}"
+DATABASE_URL = URL.create(
+    drivername="postgresql+asyncpg",
+    username=settings.db_user,
+    password=settings.db_password,
+    host=settings.db_host,
+    port=settings.db_port,
+    database=settings.db_name,
 )
 
 # Асинхронный движок SQLAlchemy.
