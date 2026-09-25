@@ -8,6 +8,7 @@ export default defineConfig({
     allowedHosts: [".trycloudflare.com"],
     proxy: {
       "/api": "http://api:8000",
+      "/media": "http://api:8000",
     },
   },
 });
