@@ -7,3 +7,4 @@ alembic
 fluent.runtime
 cachetools
 fastapi[standard]
+telethon

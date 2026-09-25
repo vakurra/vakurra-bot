@@ -71,3 +71,41 @@
   cursor: default;
   opacity: 0.5;
 }
+
+.avatar {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.preview {
+  display: grid;
+  gap: 8px;
+  text-align: center;
+}
+
+.username {
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 14px;
+}
+
+.badge {
+  justify-self: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--app-button);
+  color: var(--app-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.error {
+  margin: 0;
+  color: var(--app-text-accent);
+  font-size: 14px;
+  text-align: center;
+}

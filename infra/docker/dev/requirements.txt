@@ -8,3 +8,5 @@ fluent.runtime
 cachetools
 fastapi[standard]
 watchfiles
+telethon
+pillow

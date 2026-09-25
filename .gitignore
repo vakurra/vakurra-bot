@@ -7,3 +7,5 @@ frontend/.vite/
 .idea/
 .vscode/
 *.log
+*.session
+media/

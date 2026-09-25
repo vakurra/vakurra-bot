@@ -27,6 +27,10 @@ class Settings:
     bot_token: str | None = os.getenv("BOT_TOKEN")
     owner_id: int = int(os.getenv("OWNER_ID", "0"))
 
+    # Telegram API / Telethon
+    telegram_api_id: int = int(os.getenv("TELEGRAM_API_ID", "0"))
+    telegram_api_hash: str = os.getenv("TELEGRAM_API_HASH", "")
+    
     # Database
     db_host: str = os.getenv("DB_HOST", "localhost")
     db_port: int = int(os.getenv("DB_PORT", "5432"))
