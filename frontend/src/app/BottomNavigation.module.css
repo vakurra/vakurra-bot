@@ -33,7 +33,11 @@
 
   border: 0;
   background: transparent;
-  color: var(--app-text);
+  color: var(--app-text-muted);
+}
+
+.item[aria-current="page"] {
+  color: var(--app-accent);
 }
 
 .featured {
@@ -41,12 +45,17 @@
 }
 
 .icon {
-  font-size: 30px;
-  line-height: 1;
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+  -webkit-mask: var(--icon) center / contain no-repeat;
 }
 
 .featured .icon {
-  font-size: 40px;
+  width: 32px;
+  height: 32px;
 }
 
 .label {
@@ -59,7 +68,7 @@
   top: 0;
   bottom: 0;
 
-  border: 1px solid var(--app-border);
+  /*border: 1px solid var(--app-border);*/
   border-radius: inherit;
   background: var(--app-surface);
 

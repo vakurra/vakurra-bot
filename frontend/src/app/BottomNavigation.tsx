@@ -1,19 +1,53 @@
+import type { CSSProperties } from "react";
+
 import styles from "./BottomNavigation.module.css";
 
 import type { Page } from "./App";
+
+import feedIcon from "../assets/icons/feed.svg";
+import searchIcon from "../assets/icons/search.svg";
+import topIcon from "../assets/icons/top.svg";
+import addIcon from "../assets/icons/add.svg";
+import profileIcon from "../assets/icons/profile.svg";
+
+type NavigationItem = {
+  page: Page;
+  label: string;
+  icon: string;
+};
+
+const navigationItems: NavigationItem[] = [
+  {
+    page: "feed",
+    label: "Лента",
+    icon: feedIcon,
+  },
+  {
+    page: "search",
+    label: "Поиск",
+    icon: searchIcon,
+  },
+  {
+    page: "top",
+    label: "ТОП",
+    icon: topIcon,
+  },
+  {
+    page: "add",
+    label: "Новый",
+    icon: addIcon,
+  },
+  {
+    page: "profile",
+    label: "Вы",
+    icon: profileIcon,
+  },
+];
 
 type BottomNavigationProps = {
   currentPage: Page;
   onPageChange: (page: Page) => void;
 };
-
-const navigationItems = [
-  { page: "feed" as const, label: "Лента", icon: "?" },
-  { page: "search" as const, label: "Поиск", icon: "⌕" },
-  { page: "top" as const, label: "ТОП", icon: "🏆" },
-  { page: "add" as const, label: "Новый", icon: "+" },
-  { page: "profile" as const, label: "Вы", icon: "●" },
-];
 
 export function BottomNavigation({
   currentPage,
@@ -49,8 +83,15 @@ export function BottomNavigation({
           onClick={() => onPageChange(item.page)}
           aria-current={item.page === currentPage ? "page" : undefined}
         >
-          <span className={styles.icon}>{item.icon}</span>
-          <span className={styles.label}>{item.label}</span>
+          <span
+            className={styles.icon}
+            style={{ "--icon": "url(" + item.icon + ")" } as CSSProperties}
+            aria-hidden="true"
+          />
+
+          <span className={styles.label}>
+            {item.label}
+          </span>
         </button>
       ))}
     </nav>
