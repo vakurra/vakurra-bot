@@ -64,10 +64,17 @@ async def preview_bot(
         existing_bot = await bot_service.get_by_id(bot_data["id"])
 
     if existing_bot is not None:
-        raise HTTPException(
-            status_code=409,
-            detail="Этот бот уже есть в каталоге.",
-        )
+        if existing_bot.status == "pending":
+            raise HTTPException(
+                status_code=409,
+                detail="Этот бот уже отправлен на модерацию.",
+            )
+
+        if existing_bot.status == "approved":
+            raise HTTPException(
+                status_code=409,
+                detail="Этот бот уже опубликован в каталоге.",
+            )
 
     if bot_data["profile_photo_url"]:
         filename = bot_data["profile_photo_url"].split("/bots/")[-1]
@@ -110,10 +117,29 @@ async def submit_bot(
         existing_bot = await bot_service.get_by_id(bot_data["id"])
 
         if existing_bot is not None:
-            raise HTTPException(
-                status_code=409,
-                detail="Этот бот уже есть в каталоге.",
-            )
+            if existing_bot.status == "pending":
+                raise HTTPException(
+                    status_code=409,
+                    detail="Этот бот уже отправлен на модерацию.",
+                )
+
+            if existing_bot.status == "approved":
+                raise HTTPException(
+                    status_code=409,
+                    detail="Этот бот уже опубликован в каталоге.",
+                )
+
+            if existing_bot.status == "rejected":
+                bot = await bot_service.resubmit(
+                    bot=existing_bot,
+                    bot_data=bot_data,
+                    submitted_by=telegram_user.id,
+                )
+
+                return BotSubmitResponse(
+                    id=bot.id,
+                    status=bot.status,
+                )
 
         bot = await bot_service.create(
             bot_data=bot_data,

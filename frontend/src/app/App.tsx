@@ -18,6 +18,7 @@ export type User = {
   id: number;
   username: string | null;
   first_name: string | null;
+  role: "default" | "admin";
 };
 
 export function App() {

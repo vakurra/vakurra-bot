@@ -3,8 +3,6 @@
   --app-surface: #ffffff;
   --app-border: #d9e0e7;
   --app-accent: #3390ec;
-  --app-surface-danger: #e5484d;
-
 
   --app-text: #17212b;
   --app-text-muted: #66727f;
@@ -29,12 +27,15 @@
     #1f2225 45%,
     #18181a 100%
   );
-  --app-surface-danger: #db3333;
 
   --app-button:
-    radial-gradient(circle at 20% 20%, #13c6c0, transparent 45%),
-    radial-gradient(circle at 80% 80%, #a745d8, transparent 50%),
-  #3567fe;
+    radial-gradient(circle at 20% 20%, #11b8b3, transparent 45%),
+    radial-gradient(circle at 80% 80%, #923cbe, transparent 50%),
+  #2f5ce3;
+  --app-button-danger:
+  radial-gradient(circle at 20% 20%, #c76b6b, transparent 45%),
+  radial-gradient(circle at 80% 80%, #b7274d, transparent 50%),
+  #aa203c;
 
   --app-border: #36383a;
   --app-border-accent: #2d7cc2;

@@ -49,13 +49,6 @@ export function TopPage() {
             Основная кнопка
           </button>
         </section>
-
-        <section className={styles.example}>
-          <p className={styles.label}>Danger</p>
-          <button className={styles.dangerExample}>
-            Опасное действие
-          </button>
-        </section>
       </div>
     </div>
   );

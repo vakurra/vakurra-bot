@@ -27,7 +27,11 @@ export function AddPage() {
     } catch (error) {
       console.error(error);
 
-      setError("Не удалось найти бота.");
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Произошла ошибка.");
+      }
     } finally {
       setIsLoading(false);
     }

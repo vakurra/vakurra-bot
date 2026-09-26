@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from backend.api.routes.admin import router as admin_router
 from backend.api.routes.health import router as health_router
 from backend.api.routes.me import router as me_router
 from backend.api.routes.bots import router as bots_router
@@ -52,9 +53,10 @@ def create_app() -> FastAPI:
         StaticFiles(directory=settings.media_dir, check_dir=False),
         name="media",
     )
+    application.include_router(admin_router, prefix=settings.api_prefix)
     application.include_router(health_router, prefix=settings.api_prefix)
     application.include_router(me_router, prefix=settings.api_prefix)
-    application.include_router(bots_router, prefix=settings.api_prefix)
+    application.include_router(bots_router, prefix=settings.api_prefix)    
 
     return application
 

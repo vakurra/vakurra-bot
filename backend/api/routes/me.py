@@ -27,6 +27,7 @@ async def get_current_user(
         "id": user.id,
         "username": user.username,
         "first_name": user.first_name,
+        "role": user.role,
     }
 
 
@@ -53,4 +54,3 @@ async def get_my_bots(
         }
         for bot in bots
     ]
-    

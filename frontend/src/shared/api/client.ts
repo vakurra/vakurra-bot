@@ -32,7 +32,19 @@ async function request<T>(
   });
 
   if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`);
+    let message = `API request failed: ${response.status}`;
+
+    try {
+      const data = await response.json();
+
+      if (typeof data.detail === "string") {
+        message = data.detail;
+      }
+    } catch {
+      // Ответ не содержит JSON.
+    }
+
+    throw new Error(message);
   }
 
   return response.json() as Promise<T>;
@@ -62,6 +74,15 @@ export type MyBot = {
   status: string;
 };
 
+export type AdminBot = {
+  id: number;
+  username: string;
+  name: string;
+  profile_photo_url: string | null;
+  submitted_by: number;
+  status: string;
+};
+
 export const api = {
   health: () => request<{ status: string }>("/api/v1/health"),
 
@@ -70,6 +91,7 @@ export const api = {
       id: number;
       username: string | null;
       first_name: string | null;
+      role: "default" | "admin";
     }>("/api/v1/me", { authenticated: true }),
 
   previewBot: (username: string) =>
@@ -97,4 +119,27 @@ export const api = {
     request<MyBot[]>("/api/v1/me/bots", {
       authenticated: true,
     }),
+
+  adminBots: () =>
+    request<AdminBot[]>("/api/v1/admin/bots", {
+      authenticated: true,
+    }),
+  
+  approveBot: (botId: number) =>
+    request<{ id: number; status: string }>(
+      `/api/v1/admin/bots/${botId}/approve`,
+      {
+        method: "POST",
+        authenticated: true,
+      },
+    ),
+
+  rejectBot: (botId: number) =>
+    request<{ id: number; status: string }>(
+      `/api/v1/admin/bots/${botId}/reject`,
+      {
+        method: "POST",
+        authenticated: true,
+      },
+    ),
 };
