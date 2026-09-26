@@ -8,6 +8,8 @@ export function AddPage() {
   const [preview, setPreview] = useState<BotPreview | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit() {
     const normalizedUsername = username.trim().replace(/^@/, "");
@@ -29,6 +31,45 @@ export function AddPage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  async function handleSubmitBot() {
+    if (!preview) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      await api.submitBot(preview.username);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error(error);
+
+      setError("Не удалось отправить заявку.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  if (isSubmitted) {
+    return (
+      <div className={styles.page}>
+        <PageHeader title="Добавить бота" />
+
+        <section className={styles.card}>
+          <h2 className={styles.title}>
+            Заявка отправлена
+          </h2>
+
+          <p className={styles.description}>
+            Бот отправлен на модерацию. После проверки он появится
+            в каталоге.
+          </p>
+        </section>
+      </div>
+    );
   }
 
   if (preview) {
@@ -76,8 +117,10 @@ export function AddPage() {
           <button
             className={styles.button}
             type="button"
+            disabled={isSubmitting}
+            onClick={handleSubmitBot}
           >
-            Отправить на модерацию
+            {isSubmitting ? "Отправляем..." : "Отправить на модерацию"}
           </button>
         </section>
       </div>

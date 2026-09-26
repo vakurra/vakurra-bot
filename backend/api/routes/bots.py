@@ -12,10 +12,12 @@ router = APIRouter(
     tags=["bots"],
 )
 
+class BotSubmitResponse(BaseModel):
+    id: int
+    status: str
 
 class BotPreviewRequest(BaseModel):
     username: str
-
 
 class BotPreviewResponse(BaseModel):
     id: int
@@ -33,10 +35,7 @@ class BotPreviewResponse(BaseModel):
     profile_photo_url: str | None
 
 
-@router.post(
-    "/preview",
-    response_model=BotPreviewResponse,
-)
+@router.post("/preview", response_model=BotPreviewResponse)
 async def preview_bot(
     data: BotPreviewRequest,
     request: Request,
@@ -75,3 +74,53 @@ async def preview_bot(
         bot_data["profile_photo_url"] = f"/media/bots/{filename}"
 
     return BotPreviewResponse(**bot_data)
+
+
+@router.post("/submit", response_model=BotSubmitResponse, status_code=201)
+async def submit_bot(
+    data: BotPreviewRequest,
+    request: Request,
+    telegram_user: TelegramUser = Depends(get_telegram_user),
+) -> BotSubmitResponse:
+    username = data.username.strip().lstrip("@")
+
+    if not username:
+        raise HTTPException(
+            status_code=400,
+            detail="Username бота не указан.",
+        )
+
+    parser = request.app.state.telegram_parser
+
+    bot_data = await parser.get_bot(username)
+
+    if bot_data is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Telegram-бот не найден.",
+        )
+
+    if bot_data["profile_photo_url"]:
+        filename = bot_data["profile_photo_url"].split("/bots/")[-1]
+        bot_data["profile_photo_url"] = f"/media/bots/{filename}"
+
+    async with SessionLocal() as session:
+        bot_service = TelegramBotService(session)
+
+        existing_bot = await bot_service.get_by_id(bot_data["id"])
+
+        if existing_bot is not None:
+            raise HTTPException(
+                status_code=409,
+                detail="Этот бот уже есть в каталоге.",
+            )
+
+        bot = await bot_service.create(
+            bot_data=bot_data,
+            submitted_by=telegram_user.id,
+        )
+
+    return BotSubmitResponse(
+        id=bot.id,
+        status=bot.status,
+    )

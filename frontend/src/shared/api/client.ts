@@ -72,4 +72,16 @@ export const api = {
         username,
       },
     }),
+  
+  submitBot: (username: string) =>
+  request<{
+    id: number;
+    status: string;
+  }>("/api/v1/bots/submit", {
+    method: "POST",
+    authenticated: true,
+    body: {
+      username,
+    },
+  }),
 };
