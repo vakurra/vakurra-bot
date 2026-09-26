@@ -1,0 +1,111 @@
+.page {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: 130px 20px 120px;
+}
+
+.section {
+  display: grid;
+  gap: 16px;
+}
+
+.sectionTitle {
+  margin: 0;
+
+  color: var(--app-text);
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.message {
+  margin: 0;
+
+  color: var(--app-text-muted);
+  font-size: 15px;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+}
+
+.bot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  padding: 14px;
+
+  border: 1px solid var(--app-border);
+  border-radius: 20px;
+
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.avatar {
+  flex: 0 0 auto;
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+.info {
+  min-width: 0;
+  flex: 1;
+}
+
+.botName {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: var(--app-text);
+  font-size: 16px;
+  line-height: 1.2;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.username {
+  margin: 4px 0 0;
+
+  color: var(--app-text-muted);
+  font-size: 13px;
+}
+
+.status {
+  flex: 0 0 auto;
+
+  padding: 6px 9px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-pending {
+  background: var(--app-button);
+  color: var(--app-text);
+}
+
+.status-approved {
+  background: var(--app-button);
+  color: var(--app-text-accent);
+}
+
+.status-rejected {
+  background: var(--app-button);
+  color: var(--app-text-muted);
+}

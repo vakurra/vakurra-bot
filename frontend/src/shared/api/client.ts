@@ -54,6 +54,14 @@ export type BotPreview = {
   profile_photo_url: string | null;
 };
 
+export type MyBot = {
+  id: number;
+  username: string;
+  name: string;
+  profile_photo_url: string | null;
+  status: string;
+};
+
 export const api = {
   health: () => request<{ status: string }>("/api/v1/health"),
 
@@ -74,14 +82,19 @@ export const api = {
     }),
   
   submitBot: (username: string) =>
-  request<{
-    id: number;
-    status: string;
-  }>("/api/v1/bots/submit", {
-    method: "POST",
-    authenticated: true,
-    body: {
-      username,
-    },
-  }),
+    request<{
+      id: number;
+      status: string;
+    }>("/api/v1/bots/submit", {
+      method: "POST",
+      authenticated: true,
+      body: {
+        username,
+      },
+    }),
+
+  myBots: () =>
+    request<MyBot[]>("/api/v1/me/bots", {
+      authenticated: true,
+    }),
 };

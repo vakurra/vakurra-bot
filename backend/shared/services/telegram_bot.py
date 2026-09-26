@@ -13,7 +13,19 @@ class TelegramBotService:
             select(TelegramBot).where(TelegramBot.id == bot_id)
         )
         return result.scalar_one_or_none()
-    
+
+    async def get_by_submitted_by(
+        self,
+        user_id: int,
+    ) -> list[TelegramBot]:
+        result = await self.session.execute(
+            select(TelegramBot)
+            .where(TelegramBot.submitted_by == user_id)
+            .order_by(TelegramBot.created_at.desc())
+        )
+
+        return list(result.scalars().all())
+
     async def create(
         self,
         bot_data: dict,
