@@ -5,8 +5,6 @@ from backend.shared.database.base import Base
 
 
 class TelegramBotCategory(Base):
-    """Связь Telegram-бота с категориями."""
-
     __tablename__ = "telegram_bot_categories"
 
     bot_id: Mapped[int] = mapped_column(
@@ -14,8 +12,8 @@ class TelegramBotCategory(Base):
         primary_key=True,
     )
 
-    category_id: Mapped[int] = mapped_column(
-        ForeignKey("categories.id", ondelete="CASCADE"),
+    subcategory_id: Mapped[int] = mapped_column(
+        ForeignKey("subcategories.id", ondelete="CASCADE"),
         primary_key=True,
     )
     

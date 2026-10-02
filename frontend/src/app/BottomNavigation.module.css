@@ -37,7 +37,7 @@
 }
 
 .item[aria-current="page"] {
-  color: var(--app-accent);
+  color: var(--app-text-accent);
 }
 
 .featured {

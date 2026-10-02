@@ -1,11 +1,11 @@
-from sqlalchemy import String
+from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.shared.database.base import Base
 
 
-class Category(Base):
-    __tablename__ = "categories"
+class Subcategory(Base):
+    __tablename__ = "subcategories"
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
@@ -14,7 +14,11 @@ class Category(Base):
 
     name: Mapped[str] = mapped_column(
         String(64),
-        unique=True,
+        nullable=False,
+    )
+
+    category_id: Mapped[int] = mapped_column(
+        ForeignKey("categories.id", ondelete="CASCADE"),
         nullable=False,
     )
     
