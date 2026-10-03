@@ -93,7 +93,7 @@ class TelegramBot(Base):
         nullable=False,
     )
 
-    categories: Mapped[list["Category"]] = relationship(
+    subcategories: Mapped[list["Subcategory"]] = relationship(
         secondary="telegram_bot_categories",
         back_populates="bots",
     )

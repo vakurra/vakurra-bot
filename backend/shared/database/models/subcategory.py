@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.shared.database.base import Base
 
@@ -20,5 +20,10 @@ class Subcategory(Base):
     category_id: Mapped[int] = mapped_column(
         ForeignKey("categories.id", ondelete="CASCADE"),
         nullable=False,
+    )
+
+    bots: Mapped[list["TelegramBot"]] = relationship(
+        secondary="telegram_bot_categories",
+        back_populates="subcategories",
     )
     
