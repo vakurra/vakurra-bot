@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 
 from backend.api.dependencies.admin import get_admin_user
 from backend.shared.database.models import User
@@ -12,6 +13,10 @@ router = APIRouter(
 )
 
 
+class BotRejectRequest(BaseModel):
+    reason: str
+
+
 @router.get("/bots")
 async def get_admin_bots(
     admin_user: User = Depends(get_admin_user),
@@ -19,7 +24,7 @@ async def get_admin_bots(
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
 
-        bots = await bot_service.get_pending()
+        bots = await bot_service.get_pending_with_subcategories()
 
     return [
         {
@@ -29,8 +34,15 @@ async def get_admin_bots(
             "profile_photo_url": bot.profile_photo_url,
             "submitted_by": bot.submitted_by,
             "status": bot.status,
+            "subcategories": [
+                {
+                    "id": subcategory.id,
+                    "name": subcategory.name,
+                }
+                for subcategory in subcategories
+            ],
         }
-        for bot in bots
+        for bot, subcategories in bots
     ]
 
 
@@ -66,11 +78,21 @@ async def approve_bot(
         "status": bot.status,
     }
 
+
 @router.post("/bots/{bot_id}/reject")
 async def reject_bot(
     bot_id: int,
+    data: BotRejectRequest,
     admin_user: User = Depends(get_admin_user),
 ) -> dict:
+    reason = data.reason.strip()
+
+    if not reason:
+        raise HTTPException(
+            status_code=400,
+            detail="Причина отклонения не указана.",
+        )
+
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
 
@@ -91,6 +113,7 @@ async def reject_bot(
         bot = await bot_service.update_status(
             bot_id=bot_id,
             status="rejected",
+            rejection_reason=reason,
         )
 
     return {

@@ -51,6 +51,7 @@ async def get_my_bots(
             "name": bot.name,
             "profile_photo_url": bot.profile_photo_url,
             "status": bot.status,
+            "rejection_reason": bot.rejection_reason,
         }
         for bot in bots
     ]

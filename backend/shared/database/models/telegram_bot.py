@@ -93,6 +93,11 @@ class TelegramBot(Base):
         nullable=False,
     )
 
+    rejection_reason: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
     subcategories: Mapped[list["Subcategory"]] = relationship(
         secondary="telegram_bot_categories",
         back_populates="bots",

@@ -4,7 +4,7 @@
 }
 
 .sectionTitle {
-  margin: 10;
+  margin: 10px 0;
   color: var(--app-text);
   font-size: 20px;
   line-height: 1.2;
@@ -80,6 +80,36 @@
   font-size: 12px;
 }
 
+.categories {
+  display: grid;
+  gap: 8px;
+}
+
+.categoriesTitle {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.categoryList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 9px;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  background: var(--app-bg);
+  color: var(--app-text-muted);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -112,6 +142,77 @@
 
 .approveButton:disabled,
 .rejectButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.rejectionForm {
+  display: grid;
+  gap: 10px;
+}
+
+.rejectionLabel {
+  color: var(--app-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rejectionInput {
+  width: 100%;
+  min-height: 80px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.rejectionInput::placeholder {
+  color: var(--app-text-muted);
+}
+
+.rejectionInput:focus {
+  outline: none;
+  border-color: var(--app-border-accent);
+}
+
+.rejectionActions {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+}
+
+.cancelButton {
+  padding: 8px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirmRejectButton {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--app-button-danger);
+  color: var(--app-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelButton:disabled,
+.confirmRejectButton:disabled {
   opacity: 0.5;
   cursor: default;
 }

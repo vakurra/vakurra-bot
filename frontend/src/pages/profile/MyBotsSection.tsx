@@ -41,24 +41,37 @@ export function MyBotsSection() {
         <div className={styles.list}>
           {bots.map((bot) => (
             <article key={bot.id} className={styles.bot}>
-              {bot.profile_photo_url && (
-                <img
-                  className={styles.avatar}
-                  src={bot.profile_photo_url}
-                  alt=""
-                />
-              )}
+              <div className={styles.botMain}>
+                {bot.profile_photo_url && (
+                  <img
+                    className={styles.avatar}
+                    src={bot.profile_photo_url}
+                    alt=""
+                  />
+                )}
 
-              <div className={styles.info}>
-                <h3 className={styles.botName}>{bot.name}</h3>
-                <p className={styles.username}>@{bot.username}</p>
+                <div className={styles.info}>
+                  <h3 className={styles.botName}>{bot.name}</h3>
+                  <p className={styles.username}>@{bot.username}</p>
+                </div>
+
+                <span
+                  className={`${styles.status} ${styles[`status-${bot.status}`]}`}
+                >
+                  {getStatusLabel(bot.status)}
+                </span>
               </div>
 
-              <span
-                className={`${styles.status} ${styles[`status-${bot.status}`]}`}
-              >
-                {getStatusLabel(bot.status)}
-              </span>
+              {bot.status === "rejected" && bot.rejection_reason && (
+                <div className={styles.rejection}>
+                  <p className={styles.rejectionTitle}>
+                    Причина отклонения
+                  </p>
+                  <p className={styles.rejectionReason}>
+                    {bot.rejection_reason}
+                  </p>
+                </div>
+              )}
             </article>
           ))}
         </div>

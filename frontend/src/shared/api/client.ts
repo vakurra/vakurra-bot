@@ -72,6 +72,7 @@ export type MyBot = {
   name: string;
   profile_photo_url: string | null;
   status: string;
+  rejection_reason: string | null;
 };
 
 export type AdminBot = {
@@ -81,6 +82,7 @@ export type AdminBot = {
   profile_photo_url: string | null;
   submitted_by: number;
   status: string;
+  subcategories: Subcategory[];
 };
 
 export type Subcategory = {
@@ -143,14 +145,18 @@ export const api = {
       },
     ),
 
-  rejectBot: (botId: number) =>
+  rejectBot: (botId: number, reason: string) =>
     request<{ id: number; status: string }>(
       `/api/v1/admin/bots/${botId}/reject`,
       {
         method: "POST",
         authenticated: true,
+        body: {
+          reason,
+        },
       },
     ),
+    
   categories: () =>
     request<Category[]>("/api/v1/categories"),
 };

@@ -8,6 +8,8 @@ export function AdminModerationSection() {
   const [bots, setBots] = useState<AdminBot[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [processingBotId, setProcessingBotId] = useState<number | null>(null);
+  const [rejectingBotId, setRejectingBotId] = useState<number | null>(null);
+  const [rejectionReason, setRejectionReason] = useState("");
 
   useEffect(() => {
     async function loadBots() {
@@ -40,15 +42,34 @@ export function AdminModerationSection() {
     }
   }
 
+  function handleStartReject(botId: number) {
+    setRejectingBotId(botId);
+    setRejectionReason("");
+  }
+
+  function handleCancelReject() {
+    setRejectingBotId(null);
+    setRejectionReason("");
+  }
+
   async function handleReject(botId: number) {
+    const reason = rejectionReason.trim();
+
+    if (!reason) {
+      return;
+    }
+
     setProcessingBotId(botId);
 
     try {
-      await api.rejectBot(botId);
+      await api.rejectBot(botId, reason);
 
       setBots((currentBots) =>
         currentBots.filter((bot) => bot.id !== botId),
       );
+
+      setRejectingBotId(null);
+      setRejectionReason("");
     } catch (error) {
       console.error("Failed to reject bot:", error);
     } finally {
@@ -78,6 +99,7 @@ export function AdminModerationSection() {
         <div className={styles.list}>
           {bots.map((bot) => {
             const isProcessing = processingBotId === bot.id;
+            const isRejecting = rejectingBotId === bot.id;
 
             return (
               <article key={bot.id} className={styles.bot}>
@@ -105,25 +127,94 @@ export function AdminModerationSection() {
                   </div>
                 </div>
 
-                <div className={styles.actions}>
-                  <button
-                    type="button"
-                    className={styles.approveButton}
-                    disabled={isProcessing}
-                    onClick={() => handleApprove(bot.id)}
-                  >
-                    {isProcessing ? "..." : "Одобрить"}
-                  </button>
+                {bot.subcategories.length > 0 && (
+                  <div className={styles.categories}>
+                    <p className={styles.categoriesTitle}>
+                      Категории
+                    </p>
 
-                  <button
-                    type="button"
-                    className={styles.rejectButton}
-                    disabled={isProcessing}
-                    onClick={() => handleReject(bot.id)}
-                  >
-                    {isProcessing ? "..." : "Отклонить"}
-                  </button>
-                </div>
+                    <div className={styles.categoryList}>
+                      {bot.subcategories.map((subcategory) => (
+                        <span
+                          key={subcategory.id}
+                          className={styles.category}
+                        >
+                          {subcategory.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {isRejecting && (
+                  <div className={styles.rejectionForm}>
+                    <label
+                      className={styles.rejectionLabel}
+                      htmlFor={`rejection-${bot.id}`}
+                    >
+                      Причина отклонения
+                    </label>
+
+                    <textarea
+                      id={`rejection-${bot.id}`}
+                      className={styles.rejectionInput}
+                      value={rejectionReason}
+                      onChange={(event) =>
+                        setRejectionReason(event.target.value)
+                      }
+                      placeholder="Напишите причину отклонения..."
+                      rows={3}
+                      disabled={isProcessing}
+                    />
+
+                    <div className={styles.rejectionActions}>
+                      <button
+                        type="button"
+                        className={styles.cancelButton}
+                        disabled={isProcessing}
+                        onClick={handleCancelReject}
+                      >
+                        Отмена
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.confirmRejectButton}
+                        disabled={
+                          isProcessing ||
+                          rejectionReason.trim().length === 0
+                        }
+                        onClick={() => handleReject(bot.id)}
+                      >
+                        {isProcessing
+                          ? "Отклоняем..."
+                          : "Подтвердить отклонение"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {!isRejecting && (
+                  <div className={styles.actions}>
+                    <button
+                      type="button"
+                      className={styles.approveButton}
+                      disabled={isProcessing}
+                      onClick={() => handleApprove(bot.id)}
+                    >
+                      {isProcessing ? "..." : "Одобрить"}
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.rejectButton}
+                      disabled={isProcessing}
+                      onClick={() => handleStartReject(bot.id)}
+                    >
+                      Отклонить
+                    </button>
+                  </div>
+                )}
               </article>
             );
           })}

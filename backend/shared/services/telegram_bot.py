@@ -25,6 +25,39 @@ class TelegramBotService:
 
         return list(result.scalars().all())
 
+    async def get_pending_with_subcategories(
+        self,
+    ) -> list[tuple[TelegramBot, list[Subcategory]]]:
+        result = await self.session.execute(
+            select(
+                TelegramBot,
+                Subcategory,
+            )
+            .join(
+                TelegramBotCategory,
+                TelegramBotCategory.bot_id == TelegramBot.id,
+            )
+            .join(
+                Subcategory,
+                Subcategory.id == TelegramBotCategory.subcategory_id,
+            )
+            .where(TelegramBot.status == "pending")
+            .order_by(
+                TelegramBot.created_at.asc(),
+                Subcategory.id.asc(),
+            )
+        )
+
+        bots_by_id: dict[int, tuple[TelegramBot, list[Subcategory]]] = {}
+
+        for bot, subcategory in result.all():
+            if bot.id not in bots_by_id:
+                bots_by_id[bot.id] = (bot, [])
+
+            bots_by_id[bot.id][1].append(subcategory)
+
+        return list(bots_by_id.values())
+
     async def get_by_submitted_by(
         self,
         user_id: int,
@@ -85,6 +118,7 @@ class TelegramBotService:
         self,
         bot_id: int,
         status: str,
+        rejection_reason: str | None = None,
     ) -> TelegramBot | None:
         bot = await self.get_by_id(bot_id)
 
@@ -92,6 +126,7 @@ class TelegramBotService:
             return None
 
         bot.status = status
+        bot.rejection_reason = rejection_reason
 
         await self.session.commit()
         await self.session.refresh(bot)
@@ -140,4 +175,3 @@ class TelegramBotService:
         await self.session.refresh(bot)
 
         return bot
-        
