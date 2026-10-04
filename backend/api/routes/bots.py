@@ -42,6 +42,48 @@ class BotPreviewResponse(BaseModel):
     profile_photo_url: str | None
 
 
+class BotCatalogResponse(BaseModel):
+    username: str
+    name: str
+    about: str | None
+    description: str | None
+    mau: int | None
+    verified: bool
+    has_main_app: bool
+    menu_web_app_url: str | None
+    profile_photo_url: str | None
+    subcategories: list[dict]
+
+
+@router.get("", response_model=list[BotCatalogResponse])
+async def get_catalog_bots() -> list[BotCatalogResponse]:
+    async with SessionLocal() as session:
+        bot_service = TelegramBotService(session)
+        bots = await bot_service.get_approved_with_subcategories()
+
+    return [
+        BotCatalogResponse(
+            username=bot.username,
+            name=bot.name,
+            about=bot.about,
+            description=bot.description,
+            mau=bot.mau,
+            verified=bot.verified,
+            has_main_app=bot.has_main_app,
+            menu_web_app_url=bot.menu_web_app_url,
+            profile_photo_url=bot.profile_photo_url,
+            subcategories=[
+                {
+                    "id": subcategory.id,
+                    "name": subcategory.name,
+                }
+                for subcategory in subcategories
+            ],
+        )
+        for bot, subcategories in bots
+    ]
+
+
 @router.post("/preview", response_model=BotPreviewResponse)
 async def preview_bot(
     data: BotPreviewRequest,

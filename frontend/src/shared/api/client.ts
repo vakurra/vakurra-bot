@@ -66,6 +66,19 @@ export type BotPreview = {
   profile_photo_url: string | null;
 };
 
+export type CatalogBot = {
+  username: string;
+  name: string;
+  about: string | null;
+  description: string | null;
+  mau: number | null;
+  verified: boolean;
+  has_main_app: boolean;
+  menu_web_app_url: string | null;
+  profile_photo_url: string | null;
+  subcategories: Subcategory[];
+};
+
 export type MyBot = {
   id: number;
   username: string;
@@ -115,6 +128,9 @@ export const api = {
         username,
       },
     }),
+
+  catalogBots: () =>
+    request<CatalogBot[]>("/api/v1/bots"),
   
   submitBot: (username: string, subcategoryIds: number[]) =>
     request<{ id: number; status: string }>("/api/v1/bots/submit", {

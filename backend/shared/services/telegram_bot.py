@@ -16,6 +16,48 @@ class TelegramBotService:
         )
         return result.scalar_one_or_none()
 
+    async def get_approved(self) -> list[TelegramBot]:
+        result = await self.session.execute(
+            select(TelegramBot)
+            .where(TelegramBot.status == "approved")
+            .order_by(TelegramBot.created_at.desc())
+        )
+
+        return list(result.scalars().all())
+
+    async def get_approved_with_subcategories(
+        self,
+    ) -> list[tuple[TelegramBot, list[Subcategory]]]:
+        result = await self.session.execute(
+            select(
+                TelegramBot,
+                Subcategory,
+            )
+            .join(
+                TelegramBotCategory,
+                TelegramBotCategory.bot_id == TelegramBot.id,
+            )
+            .join(
+                Subcategory,
+                Subcategory.id == TelegramBotCategory.subcategory_id,
+            )
+            .where(TelegramBot.status == "approved")
+            .order_by(
+                TelegramBot.created_at.desc(),
+                Subcategory.id.asc(),
+            )
+        )
+
+        bots_by_id: dict[int, tuple[TelegramBot, list[Subcategory]]] = {}
+
+        for bot, subcategory in result.all():
+            if bot.id not in bots_by_id:
+                bots_by_id[bot.id] = (bot, [])
+
+            bots_by_id[bot.id][1].append(subcategory)
+
+        return list(bots_by_id.values())
+
     async def get_pending(self) -> list[TelegramBot]:
         result = await self.session.execute(
             select(TelegramBot)
@@ -154,6 +196,7 @@ class TelegramBotService:
         bot.profile_photo_url = bot_data["profile_photo_url"]
         bot.submitted_by = submitted_by
         bot.status = "pending"
+        bot.rejection_reason = None
 
         await self.session.execute(
             delete(TelegramBotCategory).where(
