@@ -60,7 +60,7 @@
 .botName {
   margin: 0;
   overflow: hidden;
-  color: var(--app-text);
+  color: var(--app-text-accent);
   font-size: 16px;
   font-weight: 600;
   line-height: 1.2;
@@ -92,6 +92,13 @@
   white-space: nowrap;
 }
 
+.mau {
+  margin: 4px 0 0;
+  color: var(--app-text-muted);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
 .about {
   margin: 0;
   color: var(--app-text-muted);
@@ -112,7 +119,7 @@
   border: 1px solid var(--app-border);
   border-radius: 999px;
   background: var(--app-bg);
-  color: var(--app-text-muted);
+  color: var(--app-text);
   font-size: 12px;
   line-height: 1.2;
 }

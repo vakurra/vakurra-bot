@@ -63,6 +63,11 @@ export function SearchPage() {
                   </div>
 
                   <p className={styles.username}>@{bot.username}</p>
+                  {bot.mau !== null && (
+                  <p className={styles.mau}>
+                    {formatMau(bot.mau)} активных пользователей
+                  </p>
+                )}
                 </div>
               </div>
 
@@ -88,4 +93,8 @@ export function SearchPage() {
       )}
     </div>
   );
+}
+
+function formatMau(value: number): string {
+  return new Intl.NumberFormat("ru-RU").format(value);
 }
