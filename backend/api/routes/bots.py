@@ -12,12 +12,19 @@ router = APIRouter(
     tags=["bots"],
 )
 
+class BotSubmitRequest(BaseModel):
+    username: str
+    subcategory_ids: list[int]
+
+
 class BotSubmitResponse(BaseModel):
     id: int
     status: str
 
+
 class BotPreviewRequest(BaseModel):
     username: str
+
 
 class BotPreviewResponse(BaseModel):
     id: int
@@ -85,7 +92,7 @@ async def preview_bot(
 
 @router.post("/submit", response_model=BotSubmitResponse, status_code=201)
 async def submit_bot(
-    data: BotPreviewRequest,
+    data: BotSubmitRequest,
     request: Request,
     telegram_user: TelegramUser = Depends(get_telegram_user),
 ) -> BotSubmitResponse:
@@ -95,6 +102,18 @@ async def submit_bot(
         raise HTTPException(
             status_code=400,
             detail="Username бота не указан.",
+        )
+
+    if not 1 <= len(data.subcategory_ids) <= 3:
+        raise HTTPException(
+            status_code=400,
+            detail="Нужно выбрать от 1 до 3 подкатегорий.",
+        )
+
+    if len(data.subcategory_ids) != len(set(data.subcategory_ids)):
+        raise HTTPException(
+            status_code=400,
+            detail="Подкатегории не должны повторяться.",
         )
 
     parser = request.app.state.telegram_parser
@@ -113,6 +132,16 @@ async def submit_bot(
 
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
+
+        subcategories = await bot_service.get_subcategories_by_ids(
+            data.subcategory_ids
+        )
+
+        if len(subcategories) != len(data.subcategory_ids):
+            raise HTTPException(
+                status_code=400,
+                detail="Одна или несколько выбранных подкатегорий не существуют.",
+            )
 
         existing_bot = await bot_service.get_by_id(bot_data["id"])
 
@@ -134,6 +163,7 @@ async def submit_bot(
                     bot=existing_bot,
                     bot_data=bot_data,
                     submitted_by=telegram_user.id,
+                    subcategories=subcategories,
                 )
 
                 return BotSubmitResponse(
@@ -144,6 +174,7 @@ async def submit_bot(
         bot = await bot_service.create(
             bot_data=bot_data,
             submitted_by=telegram_user.id,
+            subcategories=subcategories,
         )
 
     return BotSubmitResponse(

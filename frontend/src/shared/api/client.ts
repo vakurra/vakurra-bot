@@ -83,6 +83,17 @@ export type AdminBot = {
   status: string;
 };
 
+export type Subcategory = {
+  id: number;
+  name: string;
+};
+
+export type Category = {
+  id: number;
+  name: string;
+  subcategories: Subcategory[];
+};
+
 export const api = {
   health: () => request<{ status: string }>("/api/v1/health"),
 
@@ -103,15 +114,13 @@ export const api = {
       },
     }),
   
-  submitBot: (username: string) =>
-    request<{
-      id: number;
-      status: string;
-    }>("/api/v1/bots/submit", {
+  submitBot: (username: string, subcategoryIds: number[]) =>
+    request<{ id: number; status: string }>("/api/v1/bots/submit", {
       method: "POST",
       authenticated: true,
       body: {
         username,
+        subcategory_ids: subcategoryIds,
       },
     }),
 
@@ -142,4 +151,6 @@ export const api = {
         authenticated: true,
       },
     ),
+  categories: () =>
+    request<Category[]>("/api/v1/categories"),
 };

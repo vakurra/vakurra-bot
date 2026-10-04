@@ -1,7 +1,9 @@
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.shared.database.models.subcategory import Subcategory
 from backend.shared.database.models.telegram_bot import TelegramBot
+from backend.shared.database.models.telegram_bot_category import TelegramBotCategory
 
 
 class TelegramBotService:
@@ -35,10 +37,23 @@ class TelegramBotService:
 
         return list(result.scalars().all())
 
+    async def get_subcategories_by_ids(
+        self,
+        subcategory_ids: list[int],
+    ) -> list[Subcategory]:
+        result = await self.session.execute(
+            select(Subcategory)
+            .where(Subcategory.id.in_(subcategory_ids))
+            .order_by(Subcategory.id)
+        )
+
+        return list(result.scalars().all())
+
     async def create(
         self,
         bot_data: dict,
         submitted_by: int,
+        subcategories: list[Subcategory],
     ) -> TelegramBot:
         bot = TelegramBot(
             id=bot_data["id"],
@@ -57,6 +72,8 @@ class TelegramBotService:
             submitted_by=submitted_by,
             status="pending",
         )
+
+        bot.subcategories = subcategories
 
         self.session.add(bot)
         await self.session.commit()
@@ -86,6 +103,7 @@ class TelegramBotService:
         bot: TelegramBot,
         bot_data: dict,
         submitted_by: int,
+        subcategories: list[Subcategory],
     ) -> TelegramBot:
         bot.username = bot_data["username"]
         bot.name = bot_data["name"]
@@ -102,7 +120,24 @@ class TelegramBotService:
         bot.submitted_by = submitted_by
         bot.status = "pending"
 
+        await self.session.execute(
+            delete(TelegramBotCategory).where(
+                TelegramBotCategory.bot_id == bot.id
+            )
+        )
+
+        self.session.add_all(
+            [
+                TelegramBotCategory(
+                    bot_id=bot.id,
+                    subcategory_id=subcategory.id,
+                )
+                for subcategory in subcategories
+            ]
+        )
+
         await self.session.commit()
         await self.session.refresh(bot)
 
         return bot
+        
