@@ -13,6 +13,10 @@
   object-fit: cover;
 }
 
+.avatarBordered {
+  border: 2px solid var(--app-border);
+}
+
 .avatarLarge {
   display: block;
   width: 96px;
@@ -46,6 +50,35 @@
   line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.verified {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--app-button-accent);
+  color: var(--app-text);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.countBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--app-button-accent);
+  color: var(--app-text);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .categoryList {

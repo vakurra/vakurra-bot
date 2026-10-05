@@ -1,4 +1,5 @@
 import type { Category } from "../../shared/api/client";
+import content from "../../shared/styles/content.module.css";
 import layout from "../../shared/styles/layout.module.css";
 
 import styles from "./AddPage.module.css";
@@ -56,7 +57,7 @@ export function CategorySelector({
                     <span className={styles.categoryTitle}>{category.name}</span>
 
                     {selectedCount > 0 && (
-                      <span className={styles.categorySelectedCount}>
+                      <span className={content.countBadge}>
                         {selectedCount}
                       </span>
                     )}

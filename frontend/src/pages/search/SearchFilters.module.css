@@ -1,0 +1,191 @@
+.searchControls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.searchInput {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  outline: none;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.searchInput::placeholder {
+  color: var(--app-text-muted);
+}
+
+.searchInput:focus {
+  border-color: var(--app-border-accent);
+}
+
+.filterButton {
+  padding: 0 16px;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  background: var(--app-button);
+  color: var(--app-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.filterButtonActive {
+  border-color: var(--app-border-accent);
+}
+
+.filterButtonContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.filtersPanel {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.filtersHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.filtersTitle {
+  color: var(--app-text-accent);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.clearButton {
+  padding: 2px 8px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--app-button);
+  color: var(--app-text-accent);
+  font: inherit;
+  font-size: 13px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.categoryList {
+  display: grid;
+  gap: 4px;
+}
+
+.categoryGroup {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.categoryButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--app-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.categoryButtonContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.categoryArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--app-text-muted);
+  font-size: 20px;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 180ms ease;
+}
+
+.categoryArrowExpanded {
+  transform: rotate(90deg);
+}
+
+.subcategoryList {
+  display: grid;
+  gap: 2px;
+  padding: 2px 0 6px 8px;
+}
+
+.subcategoryButton {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--app-text-muted);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.subcategoryButtonActive {
+  background: var(--app-button);
+  color: var(--app-text);
+}
+
+.subcategoryCheck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: 1px solid var(--app-border);
+  border-radius: 5px;
+  color: var(--app-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.subcategoryButtonActive .subcategoryCheck {
+  border-color: var(--app-border-accent);
+  background: var(--app-button-accent);
+}
+
+.categoryButton:active,
+.subcategoryButton:active {
+  transform: none;
+}

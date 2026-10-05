@@ -25,6 +25,14 @@
     box-shadow 180ms ease;
 }
 
+.compactCard {
+  min-height: 0;
+  align-content: start;
+  gap: 10px;
+  padding: 10px;
+  --expand-duration: 350ms;
+}
+
 .botCard:active {
   transform: scale(0.98);
 }

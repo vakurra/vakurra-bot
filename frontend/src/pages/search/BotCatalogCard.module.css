@@ -1,0 +1,100 @@
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.botName {
+  margin: 0;
+  overflow: hidden;
+  color: var(--app-text-accent);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mau {
+  margin: 4px 0 0;
+  color: var(--app-text-muted);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.about {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 16px;
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  color: var(--app-text-muted);
+  font-size: 14px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: max-height var(--expand-duration) ease;
+}
+
+.cardExpanded .about {
+  max-height: 200px;
+  line-height: 1.5;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.summary {
+  display: grid;
+  gap: 8px;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+  max-height: 30px;
+  overflow: hidden;
+  transition: max-height var(--expand-duration) ease;
+}
+
+.cardExpanded .categories {
+  max-height: 300px;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.expanded {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  margin-top: -10px;
+  transition:
+    grid-template-rows var(--expand-duration) ease,
+    margin-top var(--expand-duration) ease;
+}
+
+.expandedOpen {
+  grid-template-rows: 1fr;
+  margin-top: 0;
+}
+
+.expandedContent {
+  min-height: 0;
+  display: grid;
+  gap: 12px;
+  overflow: hidden;
+  padding-top: 0;
+  transition: padding-top 350ms ease;
+}
+
+.description {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
