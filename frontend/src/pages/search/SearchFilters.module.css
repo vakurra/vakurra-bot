@@ -70,12 +70,12 @@
 
 .filtersTitle {
   color: var(--app-text-accent);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
 }
 
 .clearButton {
-  padding: 2px 8px;
+  padding: 5px 10px;
   border: 0;
   border-radius: 16px;
   background: var(--app-button);
@@ -151,7 +151,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 9px 10px;
-  border: 0;
+  border: 1px solid var(--app-border);
   border-radius: 10px;
   background: transparent;
   color: var(--app-text-muted);
@@ -163,6 +163,7 @@
 
 .subcategoryButtonActive {
   background: var(--app-button);
+  border: 1px solid var(--app-border-accent);
   color: var(--app-text);
 }
 

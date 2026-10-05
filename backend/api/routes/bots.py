@@ -56,6 +56,11 @@ class BotCatalogResponse(BaseModel):
     subcategories: list[dict]
 
 
+class BotCatalogPageResponse(BaseModel):
+    items: list[BotCatalogResponse]
+    has_more: bool
+
+
 def _normalize_username(username: str) -> str:
     return username.strip().lstrip("@")
 
@@ -104,35 +109,61 @@ async def _load_bot_data(request: Request, username: str) -> dict:
     return _prepare_bot_data(bot_data)
 
 
-@router.get("", response_model=list[BotCatalogResponse])
-async def get_catalog_bots() -> list[BotCatalogResponse]:
+@router.get("", response_model=BotCatalogPageResponse)
+async def get_catalog_bots(
+    search: str | None = None,
+    subcategory_ids: list[int] | None = None,
+    limit: int = 25,
+    offset: int = 0,
+) -> BotCatalogPageResponse:
+    if not 1 <= limit <= 100:
+        raise HTTPException(
+            status_code=400,
+            detail="Limit должен быть от 1 до 100.",
+        )
+
+    if offset < 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Offset не может быть отрицательным.",
+        )
+
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
-        bots = await bot_service.get_approved_with_subcategories()
 
-    return [
-        BotCatalogResponse(
-            username=bot.username,
-            name=bot.name,
-            about=bot.about,
-            description=bot.description,
-            mau=bot.mau,
-            verified=bot.verified,
-            has_main_app=bot.has_main_app,
-            menu_web_app_url=bot.menu_web_app_url,
-            profile_photo_url=bot.profile_photo_url,
-            subcategories=[
-                {
-                    "id": subcategory.id,
-                    "name": subcategory.name,
-                    "category_id": subcategory.category_id,
-                    "category_name": subcategory.category.name,
-                }
-                for subcategory in subcategories
-            ],
+        bots, has_more = await bot_service.get_catalog_page(
+            search=search,
+            subcategory_ids=subcategory_ids or [],
+            limit=limit,
+            offset=offset,
         )
-        for bot, subcategories in bots
-    ]
+
+    return BotCatalogPageResponse(
+        items=[
+            BotCatalogResponse(
+                username=bot.username,
+                name=bot.name,
+                about=bot.about,
+                description=bot.description,
+                mau=bot.mau,
+                verified=bot.verified,
+                has_main_app=bot.has_main_app,
+                menu_web_app_url=bot.menu_web_app_url,
+                profile_photo_url=bot.profile_photo_url,
+                subcategories=[
+                    {
+                        "id": subcategory.id,
+                        "name": subcategory.name,
+                        "category_id": subcategory.category_id,
+                        "category_name": subcategory.category.name,
+                    }
+                    for subcategory in subcategories
+                ],
+            )
+            for bot, subcategories in bots
+        ],
+        has_more=has_more,
+    )
 
 
 @router.post("/preview", response_model=BotPreviewResponse)

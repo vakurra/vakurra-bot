@@ -27,9 +27,10 @@ async function request<T>(
   const response = await fetch(`${apiBaseUrl}${path}`, {
     method: options.method ?? "GET",
     headers,
-    body: options.body !== undefined
-      ? JSON.stringify(options.body)
-      : undefined,
+    body:
+      options.body !== undefined
+        ? JSON.stringify(options.body)
+        : undefined,
   });
 
   if (!response.ok) {
@@ -80,6 +81,11 @@ export type CatalogBot = {
   subcategories: Subcategory[];
 };
 
+export type CatalogBotsResponse = {
+  items: CatalogBot[];
+  has_more: boolean;
+};
+
 export type MyBot = {
   id: number;
   username: string;
@@ -112,6 +118,13 @@ export type Category = {
   subcategories: Subcategory[];
 };
 
+type CatalogBotsParams = {
+  search?: string;
+  subcategoryIds?: number[];
+  limit?: number;
+  offset?: number;
+};
+
 export const api = {
   health: () => request<{ status: string }>(`${apiPath}/health`),
 
@@ -132,9 +145,32 @@ export const api = {
       },
     }),
 
-  catalogBots: () =>
-    request<CatalogBot[]>(`${apiPath}/bots`),
-  
+  catalogBots: (params: CatalogBotsParams = {}) => {
+    const query = new URLSearchParams();
+
+    if (params.search?.trim()) {
+      query.set("search", params.search.trim());
+    }
+
+    for (const subcategoryId of params.subcategoryIds ?? []) {
+      query.append("subcategory_ids", String(subcategoryId));
+    }
+
+    if (params.limit !== undefined) {
+      query.set("limit", String(params.limit));
+    }
+
+    if (params.offset !== undefined) {
+      query.set("offset", String(params.offset));
+    }
+
+    const queryString = query.toString();
+
+    return request<CatalogBotsResponse>(
+      `${apiPath}/bots${queryString ? `?${queryString}` : ""}`,
+    );
+  },
+
   submitBot: (username: string, subcategoryIds: number[]) =>
     request<{ id: number; status: string }>(`${apiPath}/bots/submit`, {
       method: "POST",
@@ -154,7 +190,7 @@ export const api = {
     request<AdminBot[]>(`${apiPath}/admin/bots`, {
       authenticated: true,
     }),
-  
+
   approveBot: (botId: number) =>
     request<{ id: number; status: string }>(
       `${apiPath}/admin/bots/${botId}/approve`,
@@ -175,7 +211,7 @@ export const api = {
         },
       },
     ),
-    
+
   categories: () =>
     request<Category[]>(`${apiPath}/categories`),
 };
