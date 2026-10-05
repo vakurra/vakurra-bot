@@ -102,6 +102,8 @@ export type AdminBot = {
 export type Subcategory = {
   id: number;
   name: string;
+  category_id: number;
+  category_name: string;
 };
 
 export type Category = {

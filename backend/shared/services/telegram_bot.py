@@ -3,6 +3,7 @@ from typing import Any
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.shared.database.models.category import Category
 from backend.shared.database.models.subcategory import Subcategory
 from backend.shared.database.models.telegram_bot import TelegramBot
 from backend.shared.database.models.telegram_bot_category import TelegramBotCategory
@@ -160,8 +161,9 @@ class TelegramBotService:
             if descending
             else TelegramBot.created_at.asc()
         )
+
         result = await self.session.execute(
-            select(TelegramBot, Subcategory)
+            select(TelegramBot, Subcategory, Category)
             .join(
                 TelegramBotCategory,
                 TelegramBotCategory.bot_id == TelegramBot.id,
@@ -170,13 +172,23 @@ class TelegramBotService:
                 Subcategory,
                 Subcategory.id == TelegramBotCategory.subcategory_id,
             )
+            .join(
+                Category,
+                Category.id == Subcategory.category_id,
+            )
             .where(TelegramBot.status == status)
             .order_by(created_at, Subcategory.id.asc())
         )
 
         bots_by_id: dict[int, tuple[TelegramBot, list[Subcategory]]] = {}
-        for bot, subcategory in result.all():
-            bots_by_id.setdefault(bot.id, (bot, []))[1].append(subcategory)
+
+        for bot, subcategory, category in result.all():
+            subcategory.category = category
+
+            bots_by_id.setdefault(
+                bot.id,
+                (bot, []),
+            )[1].append(subcategory)
 
         return list(bots_by_id.values())
 

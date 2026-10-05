@@ -125,6 +125,8 @@ async def get_catalog_bots() -> list[BotCatalogResponse]:
                 {
                     "id": subcategory.id,
                     "name": subcategory.name,
+                    "category_id": subcategory.category_id,
+                    "category_name": subcategory.category.name,
                 }
                 for subcategory in subcategories
             ],

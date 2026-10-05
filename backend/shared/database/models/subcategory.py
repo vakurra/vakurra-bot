@@ -22,6 +22,10 @@ class Subcategory(Base):
         nullable=False,
     )
 
+    category: Mapped["Category"] = relationship(
+        "Category",
+    )
+
     bots: Mapped[list["TelegramBot"]] = relationship(
         secondary="telegram_bot_categories",
         back_populates="subcategories",
