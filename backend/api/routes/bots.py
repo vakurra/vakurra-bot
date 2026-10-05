@@ -55,6 +55,47 @@ class BotCatalogResponse(BaseModel):
     subcategories: list[dict]
 
 
+def _normalize_username(username: str) -> str:
+    return username.strip().lstrip("@")
+
+
+def _prepare_bot_data(bot_data: dict) -> dict:
+    if bot_data["profile_photo_url"]:
+        filename = bot_data["profile_photo_url"].split("/bots/")[-1]
+        bot_data["profile_photo_url"] = f"/media/bots/{filename}"
+    return bot_data
+
+
+def _ensure_bot_can_be_submitted(bot) -> None:
+    if bot is None or bot.status == "rejected":
+        return
+
+    if bot.status == "pending":
+        raise HTTPException(
+            status_code=409,
+            detail="Этот бот уже отправлен на модерацию.",
+        )
+
+    if bot.status == "approved":
+        raise HTTPException(
+            status_code=409,
+            detail="Этот бот уже опубликован в каталоге.",
+        )
+
+
+async def _load_bot_data(request: Request, username: str) -> dict:
+    parser = request.app.state.telegram_parser
+    bot_data = await parser.get_bot(username)
+
+    if bot_data is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Telegram-бот не найден.",
+        )
+
+    return _prepare_bot_data(bot_data)
+
+
 @router.get("", response_model=list[BotCatalogResponse])
 async def get_catalog_bots() -> list[BotCatalogResponse]:
     async with SessionLocal() as session:
@@ -90,7 +131,7 @@ async def preview_bot(
     request: Request,
     telegram_user: TelegramUser = Depends(get_telegram_user),
 ) -> BotPreviewResponse:
-    username = data.username.strip().lstrip("@")
+    username = _normalize_username(data.username)
 
     if not username:
         raise HTTPException(
@@ -98,36 +139,13 @@ async def preview_bot(
             detail="Username бота не указан.",
         )
 
-    parser = request.app.state.telegram_parser
-
-    bot_data = await parser.get_bot(username)
-
-    if bot_data is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Telegram-бот не найден.",
-        )
+    bot_data = await _load_bot_data(request, username)
 
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
         existing_bot = await bot_service.get_by_id(bot_data["id"])
 
-    if existing_bot is not None:
-        if existing_bot.status == "pending":
-            raise HTTPException(
-                status_code=409,
-                detail="Этот бот уже отправлен на модерацию.",
-            )
-
-        if existing_bot.status == "approved":
-            raise HTTPException(
-                status_code=409,
-                detail="Этот бот уже опубликован в каталоге.",
-            )
-
-    if bot_data["profile_photo_url"]:
-        filename = bot_data["profile_photo_url"].split("/bots/")[-1]
-        bot_data["profile_photo_url"] = f"/media/bots/{filename}"
+    _ensure_bot_can_be_submitted(existing_bot)
 
     return BotPreviewResponse(**bot_data)
 
@@ -138,7 +156,7 @@ async def submit_bot(
     request: Request,
     telegram_user: TelegramUser = Depends(get_telegram_user),
 ) -> BotSubmitResponse:
-    username = data.username.strip().lstrip("@")
+    username = _normalize_username(data.username)
 
     if not username:
         raise HTTPException(
@@ -158,19 +176,7 @@ async def submit_bot(
             detail="Подкатегории не должны повторяться.",
         )
 
-    parser = request.app.state.telegram_parser
-
-    bot_data = await parser.get_bot(username)
-
-    if bot_data is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Telegram-бот не найден.",
-        )
-
-    if bot_data["profile_photo_url"]:
-        filename = bot_data["profile_photo_url"].split("/bots/")[-1]
-        bot_data["profile_photo_url"] = f"/media/bots/{filename}"
+    bot_data = await _load_bot_data(request, username)
 
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
@@ -188,17 +194,7 @@ async def submit_bot(
         existing_bot = await bot_service.get_by_id(bot_data["id"])
 
         if existing_bot is not None:
-            if existing_bot.status == "pending":
-                raise HTTPException(
-                    status_code=409,
-                    detail="Этот бот уже отправлен на модерацию.",
-                )
-
-            if existing_bot.status == "approved":
-                raise HTTPException(
-                    status_code=409,
-                    detail="Этот бот уже опубликован в каталоге.",
-                )
+            _ensure_bot_can_be_submitted(existing_bot)
 
             if existing_bot.status == "rejected":
                 bot = await bot_service.resubmit(

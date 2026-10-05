@@ -1,3 +1,5 @@
+from typing import Any
+
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -17,88 +19,20 @@ class TelegramBotService:
         return result.scalar_one_or_none()
 
     async def get_approved(self) -> list[TelegramBot]:
-        result = await self.session.execute(
-            select(TelegramBot)
-            .where(TelegramBot.status == "approved")
-            .order_by(TelegramBot.created_at.desc())
-        )
-
-        return list(result.scalars().all())
+        return await self._get_by_status("approved", descending=True)
 
     async def get_approved_with_subcategories(
         self,
     ) -> list[tuple[TelegramBot, list[Subcategory]]]:
-        result = await self.session.execute(
-            select(
-                TelegramBot,
-                Subcategory,
-            )
-            .join(
-                TelegramBotCategory,
-                TelegramBotCategory.bot_id == TelegramBot.id,
-            )
-            .join(
-                Subcategory,
-                Subcategory.id == TelegramBotCategory.subcategory_id,
-            )
-            .where(TelegramBot.status == "approved")
-            .order_by(
-                TelegramBot.created_at.desc(),
-                Subcategory.id.asc(),
-            )
-        )
-
-        bots_by_id: dict[int, tuple[TelegramBot, list[Subcategory]]] = {}
-
-        for bot, subcategory in result.all():
-            if bot.id not in bots_by_id:
-                bots_by_id[bot.id] = (bot, [])
-
-            bots_by_id[bot.id][1].append(subcategory)
-
-        return list(bots_by_id.values())
+        return await self._get_with_subcategories("approved", descending=True)
 
     async def get_pending(self) -> list[TelegramBot]:
-        result = await self.session.execute(
-            select(TelegramBot)
-            .where(TelegramBot.status == "pending")
-            .order_by(TelegramBot.created_at.asc())
-        )
-
-        return list(result.scalars().all())
+        return await self._get_by_status("pending", descending=False)
 
     async def get_pending_with_subcategories(
         self,
     ) -> list[tuple[TelegramBot, list[Subcategory]]]:
-        result = await self.session.execute(
-            select(
-                TelegramBot,
-                Subcategory,
-            )
-            .join(
-                TelegramBotCategory,
-                TelegramBotCategory.bot_id == TelegramBot.id,
-            )
-            .join(
-                Subcategory,
-                Subcategory.id == TelegramBotCategory.subcategory_id,
-            )
-            .where(TelegramBot.status == "pending")
-            .order_by(
-                TelegramBot.created_at.asc(),
-                Subcategory.id.asc(),
-            )
-        )
-
-        bots_by_id: dict[int, tuple[TelegramBot, list[Subcategory]]] = {}
-
-        for bot, subcategory in result.all():
-            if bot.id not in bots_by_id:
-                bots_by_id[bot.id] = (bot, [])
-
-            bots_by_id[bot.id][1].append(subcategory)
-
-        return list(bots_by_id.values())
+        return await self._get_with_subcategories("pending", descending=False)
 
     async def get_by_submitted_by(
         self,
@@ -132,21 +66,10 @@ class TelegramBotService:
     ) -> TelegramBot:
         bot = TelegramBot(
             id=bot_data["id"],
-            username=bot_data["username"],
-            name=bot_data["name"],
-            about=bot_data["about"],
-            description=bot_data["description"],
-            mau=bot_data["mau"],
-            verified=bot_data["verified"],
-            restricted=bot_data["restricted"],
-            scam=bot_data["scam"],
-            fake=bot_data["fake"],
-            has_main_app=bot_data["has_main_app"],
-            menu_web_app_url=bot_data["menu_web_app_url"],
-            profile_photo_url=bot_data["profile_photo_url"],
             submitted_by=submitted_by,
             status="pending",
         )
+        self._apply_bot_data(bot, bot_data)
 
         bot.subcategories = subcategories
 
@@ -182,18 +105,7 @@ class TelegramBotService:
         submitted_by: int,
         subcategories: list[Subcategory],
     ) -> TelegramBot:
-        bot.username = bot_data["username"]
-        bot.name = bot_data["name"]
-        bot.about = bot_data["about"]
-        bot.description = bot_data["description"]
-        bot.mau = bot_data["mau"]
-        bot.verified = bot_data["verified"]
-        bot.restricted = bot_data["restricted"]
-        bot.scam = bot_data["scam"]
-        bot.fake = bot_data["fake"]
-        bot.has_main_app = bot_data["has_main_app"]
-        bot.menu_web_app_url = bot_data["menu_web_app_url"]
-        bot.profile_photo_url = bot_data["profile_photo_url"]
+        self._apply_bot_data(bot, bot_data)
         bot.submitted_by = submitted_by
         bot.status = "pending"
         bot.rejection_reason = None
@@ -218,3 +130,70 @@ class TelegramBotService:
         await self.session.refresh(bot)
 
         return bot
+
+    async def _get_by_status(
+        self,
+        status: str,
+        *,
+        descending: bool,
+    ) -> list[TelegramBot]:
+        created_at = (
+            TelegramBot.created_at.desc()
+            if descending
+            else TelegramBot.created_at.asc()
+        )
+        result = await self.session.scalars(
+            select(TelegramBot)
+            .where(TelegramBot.status == status)
+            .order_by(created_at)
+        )
+        return list(result.all())
+
+    async def _get_with_subcategories(
+        self,
+        status: str,
+        *,
+        descending: bool,
+    ) -> list[tuple[TelegramBot, list[Subcategory]]]:
+        created_at = (
+            TelegramBot.created_at.desc()
+            if descending
+            else TelegramBot.created_at.asc()
+        )
+        result = await self.session.execute(
+            select(TelegramBot, Subcategory)
+            .join(
+                TelegramBotCategory,
+                TelegramBotCategory.bot_id == TelegramBot.id,
+            )
+            .join(
+                Subcategory,
+                Subcategory.id == TelegramBotCategory.subcategory_id,
+            )
+            .where(TelegramBot.status == status)
+            .order_by(created_at, Subcategory.id.asc())
+        )
+
+        bots_by_id: dict[int, tuple[TelegramBot, list[Subcategory]]] = {}
+        for bot, subcategory in result.all():
+            bots_by_id.setdefault(bot.id, (bot, []))[1].append(subcategory)
+
+        return list(bots_by_id.values())
+
+    @staticmethod
+    def _apply_bot_data(bot: TelegramBot, bot_data: dict[str, Any]) -> None:
+        for field in (
+            "username",
+            "name",
+            "about",
+            "description",
+            "mau",
+            "verified",
+            "restricted",
+            "scam",
+            "fake",
+            "has_main_app",
+            "menu_web_app_url",
+            "profile_photo_url",
+        ):
+            setattr(bot, field, bot_data[field])

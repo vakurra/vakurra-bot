@@ -1,6 +1,7 @@
 import { getTelegramInitData } from "../telegram/auth";
 
 const apiBaseUrl = import.meta.env.VITE_API_URL ?? "";
+const apiPath = "/api/v1";
 
 type RequestOptions = {
   method?: "GET" | "POST";
@@ -110,7 +111,7 @@ export type Category = {
 };
 
 export const api = {
-  health: () => request<{ status: string }>("/api/v1/health"),
+  health: () => request<{ status: string }>(`${apiPath}/health`),
 
   me: () =>
     request<{
@@ -118,10 +119,10 @@ export const api = {
       username: string | null;
       first_name: string | null;
       role: "default" | "admin";
-    }>("/api/v1/me", { authenticated: true }),
+    }>(`${apiPath}/me`, { authenticated: true }),
 
   previewBot: (username: string) =>
-    request<BotPreview>("/api/v1/bots/preview", {
+    request<BotPreview>(`${apiPath}/bots/preview`, {
       method: "POST",
       authenticated: true,
       body: {
@@ -130,10 +131,10 @@ export const api = {
     }),
 
   catalogBots: () =>
-    request<CatalogBot[]>("/api/v1/bots"),
+    request<CatalogBot[]>(`${apiPath}/bots`),
   
   submitBot: (username: string, subcategoryIds: number[]) =>
-    request<{ id: number; status: string }>("/api/v1/bots/submit", {
+    request<{ id: number; status: string }>(`${apiPath}/bots/submit`, {
       method: "POST",
       authenticated: true,
       body: {
@@ -143,18 +144,18 @@ export const api = {
     }),
 
   myBots: () =>
-    request<MyBot[]>("/api/v1/me/bots", {
+    request<MyBot[]>(`${apiPath}/me/bots`, {
       authenticated: true,
     }),
 
   adminBots: () =>
-    request<AdminBot[]>("/api/v1/admin/bots", {
+    request<AdminBot[]>(`${apiPath}/admin/bots`, {
       authenticated: true,
     }),
   
   approveBot: (botId: number) =>
     request<{ id: number; status: string }>(
-      `/api/v1/admin/bots/${botId}/approve`,
+      `${apiPath}/admin/bots/${botId}/approve`,
       {
         method: "POST",
         authenticated: true,
@@ -163,7 +164,7 @@ export const api = {
 
   rejectBot: (botId: number, reason: string) =>
     request<{ id: number; status: string }>(
-      `/api/v1/admin/bots/${botId}/reject`,
+      `${apiPath}/admin/bots/${botId}/reject`,
       {
         method: "POST",
         authenticated: true,
@@ -174,5 +175,5 @@ export const api = {
     ),
     
   categories: () =>
-    request<Category[]>("/api/v1/categories"),
+    request<Category[]>(`${apiPath}/categories`),
 };
