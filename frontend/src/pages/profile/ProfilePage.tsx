@@ -1,10 +1,10 @@
 import type { User } from "../../app/App";
 import { PageHeader } from "../../shared/ui/PageHeader";
+import common from "../../shared/styles/common.module.css";
 
 import { MyBotsSection } from "./MyBotsSection";
 import { AdminModerationSection } from "./AdminModerationSection";
 
-import styles from "./ProfilePage.module.css";
 
 type ProfilePageProps = {
   user: User | null;
@@ -16,7 +16,7 @@ export function ProfilePage({ user }: ProfilePageProps) {
     : user?.first_name ?? "Пользователь";
 
   return (
-    <div className={styles.page}>
+    <div className={common.page}>
       <PageHeader title={displayName} />
 
       <MyBotsSection />

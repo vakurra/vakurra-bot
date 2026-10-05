@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { api, type MyBot } from "../../shared/api/client";
-
-import styles from "./MyBotsSection.module.css";
+import common from "../../shared/styles/common.module.css";
 
 export function MyBotsSection() {
   const [bots, setBots] = useState<MyBot[]>([]);
@@ -24,50 +23,50 @@ export function MyBotsSection() {
   }, []);
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>Мои заявки</h2>
+    <section className={common.section}>
+      <h2 className={common.sectionTitle}>Мои заявки</h2>
 
       {isLoading && (
-        <p className={styles.message}>Загрузка...</p>
+        <p className={common.message}>Загрузка...</p>
       )}
 
       {!isLoading && bots.length === 0 && (
-        <p className={styles.message}>
+        <p className={common.message}>
           Вы ещё не добавляли ботов.
         </p>
       )}
 
       {!isLoading && bots.length > 0 && (
-        <div className={styles.list}>
+        <div className={common.list}>
           {bots.map((bot) => (
-            <article key={bot.id} className={styles.bot}>
-              <div className={styles.botMain}>
+            <article key={bot.id} className={common.botCard}>
+              <div className={common.botMain}>
                 {bot.profile_photo_url && (
                   <img
-                    className={styles.avatar}
+                    className={common.avatar}
                     src={bot.profile_photo_url}
                     alt=""
                   />
                 )}
 
-                <div className={styles.info}>
-                  <h3 className={styles.botName}>{bot.name}</h3>
-                  <p className={styles.username}>@{bot.username}</p>
+                <div className={common.info}>
+                  <h3 className={common.botName}>{bot.name}</h3>
+                  <p className={common.username}>@{bot.username}</p>
                 </div>
 
                 <span
-                  className={`${styles.status} ${styles[`status-${bot.status}`]}`}
+                  className={`${common.status} ${getStatusClass(bot.status)}`}
                 >
                   {getStatusLabel(bot.status)}
                 </span>
               </div>
 
               {bot.status === "rejected" && bot.rejection_reason && (
-                <div className={styles.rejection}>
-                  <p className={styles.rejectionTitle}>
+                <div className={common.rejection}>
+                  <p className={common.rejectionTitle}>
                     Причина отклонения
                   </p>
-                  <p className={styles.rejectionReason}>
+                  <p className={common.rejectionReason}>
                     {bot.rejection_reason}
                   </p>
                 </div>
@@ -94,4 +93,14 @@ function getStatusLabel(status: string): string {
     default:
       return status;
   }
+}
+
+function getStatusClass(status: string): string {
+  const classes: Record<string, string> = {
+    pending: common.statusPending,
+    approved: common.statusApproved,
+    rejected: common.statusRejected,
+  };
+
+  return classes[status] ?? "";
 }

@@ -1,19 +1,3 @@
-.page {
-  width: min(100%, 720px);
-  margin: 0 auto;
-  padding: 130px 20px 120px;
-}
-
-.card {
-  display: grid;
-  gap: 16px;
-  padding: 24px;
-  border: 1px solid var(--app-border);
-  border-radius: 24px;
-  background: var(--app-surface);
-  box-shadow: var(--app-shadow);
-}
-
 .title {
   margin: 0;
   color: var(--app-text-accent);
@@ -36,15 +20,20 @@
   font-weight: 600;
 }
 
-.input {
-  width: 100%;
-  padding: 14px 16px;
+.input,
+.categoryButton,
+.subcategory {
   border: 1px solid var(--app-border);
-  border-radius: 16px;
-  outline: none;
   background: var(--app-bg);
   color: var(--app-text);
   font: inherit;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  outline: none;
 }
 
 .input::placeholder {
@@ -70,15 +59,6 @@
 .button:disabled {
   cursor: default;
   opacity: 0.5;
-}
-
-.avatar {
-  display: block;
-  width: 96px;
-  height: 96px;
-  margin: 0 auto;
-  border-radius: 50%;
-  object-fit: cover;
 }
 
 .preview {
@@ -146,13 +126,6 @@
   line-height: 1.5;
 }
 
-.message {
-  margin: 0;
-  color: var(--app-text-muted);
-  font-size: 14px;
-  text-align: center;
-}
-
 .categoryList {
   display: grid;
   gap: 18px;
@@ -169,11 +142,7 @@
   justify-content: space-between;
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid var(--app-border);
   border-radius: 16px;
-  background: var(--app-bg);
-  color: var(--app-text);
-  font: inherit;
   text-align: left;
   cursor: pointer;
 }
@@ -231,11 +200,7 @@
   gap: 10px;
   width: 100%;
   padding: 11px 12px;
-  border: 1px solid var(--app-border);
   border-radius: 14px;
-  background: var(--app-bg);
-  color: var(--app-text);
-  font: inherit;
   font-size: 14px;
   text-align: left;
   cursor: pointer;

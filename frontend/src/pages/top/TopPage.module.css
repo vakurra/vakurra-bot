@@ -1,9 +1,3 @@
-.page {
-  width: min(100%, 720px);
-  margin: 0 auto;
-  padding: 50px 20px 120px;
-}
-
 .palette {
   display: grid;
   gap: 16px;
@@ -17,67 +11,59 @@
 
 .label {
   margin: 0;
-
   color: var(--app-text-muted);
   font-size: 14px;
   font-weight: 600;
 }
 
-.backgroundExample {
+.backgroundExample,
+.surfaceExample,
+.textExample,
+.mutedExample,
+.borderExample {
   padding: 24px;
-  border: 1px solid var(--app-border);
   border-radius: 16px;
+}
 
+.backgroundExample,
+.borderExample {
+  border: 1px solid var(--app-border);
+}
+
+.backgroundExample {
   background: var(--app-bg);
   color: var(--app-text);
 }
 
 .surfaceExample {
-  padding: 24px;
   border: 1px solid var(--app-border-accent);
-  border-radius: 16px;
-
   background: var(--app-surface);
   color: var(--app-text);
-
   box-shadow: var(--app-shadow);
 }
 
-.textExample {
-  padding: 24px;
-  border-radius: 16px;
-
+.textExample,
+.mutedExample,
+.borderExample {
   background: var(--app-surface);
+}
+
+.textExample,
+.borderExample {
   color: var(--app-text);
 }
 
 .mutedExample {
-  padding: 24px;
-  border-radius: 16px;
-
-  background: var(--app-surface);
   color: var(--app-text-muted);
-}
-
-.borderExample {
-  padding: 24px;
-  border: 1px solid var(--app-border);
-  border-radius: 16px;
-
-  background: var(--app-surface);
-  color: var(--app-text);
 }
 
 .accentExample {
   width: 100%;
   padding: 14px 20px;
-
   border: 0;
   border-radius: 14px;
-
   background: var(--app-surface);
   color: var(--app-text-accent);
-
   font: inherit;
   font-weight: 600;
   -webkit-tap-highlight-color: transparent;

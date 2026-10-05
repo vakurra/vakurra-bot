@@ -1,3 +1,13 @@
+.page {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: 130px 20px 120px;
+}
+
+.pageTop {
+  padding-top: 50px;
+}
+
 .section {
   display: grid;
   gap: 16px;
@@ -21,12 +31,21 @@
   gap: 12px;
 }
 
-.bot {
+.surfaceCard {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--app-border);
+  border-radius: 24px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.botCard {
   display: grid;
   gap: 12px;
   width: 100%;
   min-width: 0;
-  box-sizing: border-box;
   padding: 14px;
   border: 1px solid var(--app-border);
   border-radius: 20px;
@@ -45,6 +64,15 @@
   flex: 0 0 auto;
   width: 52px;
   height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarLarge {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -70,8 +98,27 @@
   overflow: hidden;
   color: var(--app-text-muted);
   font-size: 13px;
+  line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.categoryList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 9px;
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  background: var(--app-bg);
+  color: var(--app-text-muted);
+  font-size: 12px;
+  line-height: 1.2;
 }
 
 .status {
@@ -79,24 +126,19 @@
   min-width: 0;
   padding: 6px 9px;
   border-radius: 999px;
+  color: var(--app-text);
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
 
-.status-pending {
+.statusPending,
+.statusApproved {
   background: var(--app-button);
-  color: var(--app-text);
 }
 
-.status-approved {
-  background: var(--app-button);
-  color: var(--app-text);
-}
-
-.status-rejected {
+.statusRejected {
   background: var(--app-button-danger);
-  color: var(--app-text);
 }
 
 .rejection {
@@ -107,15 +149,18 @@
   background: var(--app-bg);
 }
 
-.rejectionTitle {
+.rejectionTitle,
+.rejectionReason {
   margin: 0;
+}
+
+.rejectionTitle {
   color: var(--app-text);
   font-size: 13px;
   font-weight: 600;
 }
 
 .rejectionReason {
-  margin: 0;
   color: var(--app-text-muted);
   font-size: 13px;
   line-height: 1.4;

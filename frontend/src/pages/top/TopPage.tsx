@@ -1,10 +1,11 @@
 import { PageHeader } from "../../shared/ui/PageHeader";
+import common from "../../shared/styles/common.module.css";
 
 import styles from "./TopPage.module.css";
 
 export function TopPage() {
   return (
-    <div className={styles.page}>
+    <div className={`${common.page} ${common.pageTop}`}>
       <PageHeader title="VakurraBot" />
 
       <div className={styles.palette}>

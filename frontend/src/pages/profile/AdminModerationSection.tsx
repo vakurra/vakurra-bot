@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { api, type AdminBot } from "../../shared/api/client";
+import common from "../../shared/styles/common.module.css";
 
 import styles from "./AdminModerationSection.module.css";
 
@@ -78,46 +79,46 @@ export function AdminModerationSection() {
   }
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>
+    <section className={common.section}>
+      <h2 className={common.sectionTitle}>
         Модерация
       </h2>
 
       {isLoading && (
-        <p className={styles.message}>
+        <p className={common.message}>
           Загрузка...
         </p>
       )}
 
       {!isLoading && bots.length === 0 && (
-        <p className={styles.message}>
+        <p className={common.message}>
           Нет заявок на модерацию.
         </p>
       )}
 
       {!isLoading && bots.length > 0 && (
-        <div className={styles.list}>
+        <div className={common.list}>
           {bots.map((bot) => {
             const isProcessing = processingBotId === bot.id;
             const isRejecting = rejectingBotId === bot.id;
 
             return (
-              <article key={bot.id} className={styles.bot}>
-                <div className={styles.botInfo}>
+              <article key={bot.id} className={common.botCard}>
+                <div className={common.botMain}>
                   {bot.profile_photo_url && (
                     <img
-                      className={styles.avatar}
+                      className={common.avatar}
                       src={bot.profile_photo_url}
                       alt=""
                     />
                   )}
 
-                  <div className={styles.info}>
-                    <h3 className={styles.botName}>
+                  <div className={common.info}>
+                    <h3 className={common.botName}>
                       {bot.name}
                     </h3>
 
-                    <p className={styles.username}>
+                    <p className={common.username}>
                       @{bot.username}
                     </p>
 
@@ -133,11 +134,11 @@ export function AdminModerationSection() {
                       Категории
                     </p>
 
-                    <div className={styles.categoryList}>
+                    <div className={common.categoryList}>
                       {bot.subcategories.map((subcategory) => (
                         <span
                           key={subcategory.id}
-                          className={styles.category}
+                          className={common.category}
                         >
                           {subcategory.name}
                         </span>
