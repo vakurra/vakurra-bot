@@ -8,6 +8,7 @@
 
 .description {
   margin: 0;
+  text-align: center;
   color: var(--app-text-muted);
   font-size: 15px;
   line-height: 1.5;
@@ -214,9 +215,37 @@
   background: var(--app-bg);
 }
 
+.rulesList {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.rulesList li {
+  margin-bottom: 6px;
+}
+
+.rulesList li:last-child {
+  margin-bottom: 0;
+}
+
 .rulesText {
   margin: 0;
   color: var(--app-text-muted);
   font-size: 13px;
   line-height: 1.5;
+}
+
+.backButton {
+  display: inline-flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 auto;
+}
+
+.backIcon {
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
 }

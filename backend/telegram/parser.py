@@ -85,6 +85,9 @@ class TelegramParser:
         except UsernameInvalidError as error:
             raise InvalidTelegramUsernameError from error
 
+        if not resolved.users:
+            return None
+
         user = resolved.users[0]
 
         if not user.bot:

@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import type { BotPreview, Category } from "../../shared/api/client";
 import buttons from "../../shared/styles/buttons.module.css";
 import cards from "../../shared/styles/cards.module.css";
@@ -5,6 +7,8 @@ import content from "../../shared/styles/content.module.css";
 
 import { CategorySelector } from "./CategorySelector";
 import styles from "./AddPage.module.css";
+
+import backIcon from "../../assets/icons/back.svg";
 
 type BotPreviewPanelProps = {
   preview: BotPreview;
@@ -14,6 +18,7 @@ type BotPreviewPanelProps = {
   isCategoriesLoading: boolean;
   isSubmitting: boolean;
   error: string | null;
+  onBack: () => void;
   onCategoryToggle: (categoryId: number) => void;
   onSubcategoryToggle: (subcategoryId: number) => void;
   onSubmit: () => void;
@@ -27,6 +32,7 @@ export function BotPreviewPanel({
   isCategoriesLoading,
   isSubmitting,
   error,
+  onBack,
   onCategoryToggle,
   onSubcategoryToggle,
   onSubmit,
@@ -54,6 +60,20 @@ export function BotPreviewPanel({
         )}
       </div>
 
+      <button
+        className={`${buttons.dangerButton} ${styles.backButton}`}
+        type="button"
+        onClick={onBack}
+        disabled={isSubmitting}
+      >
+        <span
+          className={styles.backIcon}
+          style={{ "--icon": `url(${backIcon})` } as CSSProperties}
+          aria-hidden="true"
+        />
+        Назад
+      </button>
+
       <CategorySelector
         categories={categories}
         selectedIds={selectedIds}
@@ -64,12 +84,14 @@ export function BotPreviewPanel({
       />
 
       <div className={styles.rules}>
-        <h3 className={styles.sectionTitle}>Правила каталога</h3>
-        <p className={styles.rulesText}>
-          Не принимаются боты, связанные с казино и азартными играми,
-          мошенничеством, обманом пользователей или другой запрещённой
-          деятельностью.
-        </p>
+        <h3 className={styles.sectionTitle}>Запрещены</h3>
+
+        <ul className={styles.rulesList}>
+          <li>Боты, связанные с казино и азартными играми.</li>
+          <li>Боты, связанные с мошенничеством или обманом пользователей.</li>
+          <li>Боты, связанные с другой запрещённой деятельностью.</li>
+        </ul>
+
         <p className={styles.rulesText}>
           Выбирайте только те подкатегории, которые действительно соответствуют
           функциональности бота.
@@ -81,7 +103,11 @@ export function BotPreviewPanel({
       <button
         className={buttons.button}
         type="button"
-        disabled={selectedIds.length === 0 || isCategoriesLoading || isSubmitting}
+        disabled={
+          selectedIds.length === 0 ||
+          isCategoriesLoading ||
+          isSubmitting
+        }
         onClick={onSubmit}
       >
         {isSubmitting ? "Отправляем..." : "Отправить на модерацию"}

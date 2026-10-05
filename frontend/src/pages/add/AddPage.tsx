@@ -55,6 +55,13 @@ export function AddPage() {
     }
   }
 
+  function handleBack() {
+    setPreview(null);
+    setSelectedIds([]);
+    setExpandedIds([]);
+    setError(null);
+  }
+
   function handleCategoryToggle(categoryId: number) {
     setExpandedIds((currentIds) =>
       currentIds.includes(categoryId)
@@ -68,6 +75,7 @@ export function AddPage() {
       if (currentIds.includes(subcategoryId)) {
         return currentIds.filter((id) => id !== subcategoryId);
       }
+
       return currentIds.length >= 3
         ? currentIds
         : [...currentIds, subcategoryId];
@@ -113,6 +121,7 @@ export function AddPage() {
           isCategoriesLoading={isCategoriesLoading}
           isSubmitting={isSubmitting}
           error={error}
+          onBack={handleBack}
           onCategoryToggle={handleCategoryToggle}
           onSubcategoryToggle={handleSubcategoryToggle}
           onSubmit={handleSubmit}
@@ -127,6 +136,7 @@ export function AddPage() {
           <label className={styles.label} htmlFor="bot-username">
             Username бота
           </label>
+
           <input
             id="bot-username"
             className={styles.input}
