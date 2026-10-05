@@ -9,8 +9,9 @@
 }
 
 .section {
+  padding-top: 10px;
   display: grid;
-  gap: 16px;
+  gap: 8px;
 }
 
 .sectionTitle {

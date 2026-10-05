@@ -90,6 +90,17 @@ class TelegramParser:
         if not user.bot:
             return None
 
+        usernames = user.usernames or []
+
+        primary_username = next(
+            (
+                item.username
+                for item in usernames
+                if item.active and item.editable
+            ),
+            None,
+        )
+
         result = await self.client(
             functions.users.GetFullUserRequest(user)
         )
@@ -104,7 +115,7 @@ class TelegramParser:
 
         return {
             "id": user.id,
-            "username": user.username,
+            "username": primary_username or username,
             "name": " ".join(
                 part
                 for part in (
