@@ -90,7 +90,7 @@ async def reject_bot(
     if not reason:
         raise HTTPException(
             status_code=400,
-            detail="Причина отклонения не указана.",
+            detail="Причина не указана.",
         )
 
     async with SessionLocal() as session:

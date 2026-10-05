@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from backend.api.dependencies.auth import get_telegram_user
 from backend.shared.database.session import SessionLocal
 from backend.shared.services.telegram_bot import TelegramBotService
+from backend.telegram.parser import InvalidTelegramUsernameError
 
 
 router = APIRouter(
@@ -85,7 +86,14 @@ def _ensure_bot_can_be_submitted(bot) -> None:
 
 async def _load_bot_data(request: Request, username: str) -> dict:
     parser = request.app.state.telegram_parser
-    bot_data = await parser.get_bot(username)
+
+    try:
+        bot_data = await parser.get_bot(username)
+    except InvalidTelegramUsernameError as error:
+        raise HTTPException(
+            status_code=400,
+            detail="Некорректный username Telegram.",
+        ) from error
 
     if bot_data is None:
         raise HTTPException(

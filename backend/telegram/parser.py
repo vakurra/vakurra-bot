@@ -2,9 +2,13 @@ from pathlib import Path
 
 from PIL import Image
 from telethon import TelegramClient, functions
-from telethon.errors import UsernameNotOccupiedError
+from telethon.errors import UsernameInvalidError, UsernameNotOccupiedError
 
 from backend.shared.config import settings
+
+
+class InvalidTelegramUsernameError(Exception):
+    """Некорректный username Telegram."""
 
 
 class TelegramParser:
@@ -78,6 +82,8 @@ class TelegramParser:
             )
         except UsernameNotOccupiedError:
             return None
+        except UsernameInvalidError as error:
+            raise InvalidTelegramUsernameError from error
 
         user = resolved.users[0]
 

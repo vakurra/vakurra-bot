@@ -1,5 +1,5 @@
 import type { Category } from "../../shared/api/client";
-import common from "../../shared/styles/common.module.css";
+import layout from "../../shared/styles/layout.module.css";
 
 import styles from "./AddPage.module.css";
 
@@ -33,7 +33,7 @@ export function CategorySelector({
       </p>
 
       {isLoading && (
-        <p className={common.message}>Загрузка категорий...</p>
+        <p className={layout.message}>Загрузка категорий...</p>
       )}
 
       {!isLoading && (

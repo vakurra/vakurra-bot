@@ -1,11 +1,12 @@
 import { PageHeader } from "../../shared/ui/PageHeader";
-import common from "../../shared/styles/common.module.css";
+import buttons from "../../shared/styles/buttons.module.css";
+import layout from "../../shared/styles/layout.module.css";
 
 import styles from "./TopPage.module.css";
 
 export function TopPage() {
   return (
-    <div className={`${common.page} ${common.pageTop}`}>
+    <div className={`${layout.page} ${layout.pageTop}`}>
       <PageHeader title="VakurraBot" />
 
       <div className={styles.palette}>
@@ -46,7 +47,7 @@ export function TopPage() {
 
         <section className={styles.example}>
           <p className={styles.label}>Accent</p>
-          <button className={styles.accentExample}>
+          <button className={buttons.accentButton}>
             Основная кнопка
           </button>
         </section>

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { api, type AdminBot } from "../../shared/api/client";
-import common from "../../shared/styles/common.module.css";
+import buttons from "../../shared/styles/buttons.module.css";
+import cards from "../../shared/styles/cards.module.css";
+import content from "../../shared/styles/content.module.css";
+import layout from "../../shared/styles/layout.module.css";
 
 import styles from "./AdminModerationSection.module.css";
 
@@ -79,46 +82,46 @@ export function AdminModerationSection() {
   }
 
   return (
-    <section className={common.section}>
-      <h2 className={common.sectionTitle}>
+    <section className={layout.section}>
+      <h2 className={layout.sectionTitle}>
         Модерация
       </h2>
 
       {isLoading && (
-        <p className={common.message}>
+        <p className={layout.message}>
           Загрузка...
         </p>
       )}
 
       {!isLoading && bots.length === 0 && (
-        <p className={common.message}>
+        <p className={layout.message}>
           Нет заявок на модерацию.
         </p>
       )}
 
       {!isLoading && bots.length > 0 && (
-        <div className={common.list}>
+        <div className={layout.list}>
           {bots.map((bot) => {
             const isProcessing = processingBotId === bot.id;
             const isRejecting = rejectingBotId === bot.id;
 
             return (
-              <article key={bot.id} className={common.botCard}>
-                <div className={common.botMain}>
+              <article key={bot.id} className={cards.botCard}>
+                <div className={content.botMain}>
                   {bot.profile_photo_url && (
                     <img
-                      className={common.avatar}
+                      className={content.avatar}
                       src={bot.profile_photo_url}
                       alt=""
                     />
                   )}
 
-                  <div className={common.info}>
-                    <h3 className={common.botName}>
+                  <div className={content.info}>
+                    <h3 className={content.botName}>
                       {bot.name}
                     </h3>
 
-                    <p className={common.username}>
+                    <p className={content.username}>
                       @{bot.username}
                     </p>
 
@@ -134,11 +137,11 @@ export function AdminModerationSection() {
                       Категории
                     </p>
 
-                    <div className={common.categoryList}>
+                    <div className={content.categoryList}>
                       {bot.subcategories.map((subcategory) => (
                         <span
                           key={subcategory.id}
-                          className={common.category}
+                          className={content.category}
                         >
                           {subcategory.name}
                         </span>
@@ -171,7 +174,7 @@ export function AdminModerationSection() {
                     <div className={styles.rejectionActions}>
                       <button
                         type="button"
-                        className={styles.cancelButton}
+                      className={buttons.secondaryButton}
                         disabled={isProcessing}
                         onClick={handleCancelReject}
                       >
@@ -180,7 +183,7 @@ export function AdminModerationSection() {
 
                       <button
                         type="button"
-                        className={styles.confirmRejectButton}
+                        className={buttons.dangerButton}
                         disabled={
                           isProcessing ||
                           rejectionReason.trim().length === 0
@@ -199,7 +202,7 @@ export function AdminModerationSection() {
                   <div className={styles.actions}>
                     <button
                       type="button"
-                      className={styles.approveButton}
+                      className={buttons.primaryButton}
                       disabled={isProcessing}
                       onClick={() => handleApprove(bot.id)}
                     >
@@ -208,7 +211,7 @@ export function AdminModerationSection() {
 
                     <button
                       type="button"
-                      className={styles.rejectButton}
+                      className={buttons.dangerButton}
                       disabled={isProcessing}
                       onClick={() => handleStartReject(bot.id)}
                     >

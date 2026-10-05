@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 
 import { PageHeader } from "../../shared/ui/PageHeader";
 import { api, type CatalogBot } from "../../shared/api/client";
-import common from "../../shared/styles/common.module.css";
+import cards from "../../shared/styles/cards.module.css";
+import content from "../../shared/styles/content.module.css";
+import layout from "../../shared/styles/layout.module.css";
 
 import styles from "./SearchPage.module.css";
 
@@ -26,33 +28,33 @@ export function SearchPage() {
   }, []);
 
   return (
-    <div className={common.page}>
+    <div className={layout.page}>
       <PageHeader title="Поиск" />
 
       {isLoading && (
-        <p className={common.message}>Загрузка...</p>
+        <p className={layout.message}>Загрузка...</p>
       )}
 
       {!isLoading && bots.length === 0 && (
-        <p className={common.message}>
+        <p className={layout.message}>
           В каталоге пока нет ботов.
         </p>
       )}
 
       {!isLoading && bots.length > 0 && (
-        <div className={common.list}>
+        <div className={layout.list}>
           {bots.map((bot) => (
-            <article key={bot.username} className={common.botCard}>
-              <div className={common.botMain}>
+            <article key={bot.username} className={cards.botCard}>
+              <div className={content.botMain}>
                 {bot.profile_photo_url && (
                   <img
-                    className={`${common.avatar} ${styles.avatar}`}
+                    className={`${content.avatar} ${styles.avatar}`}
                     src={bot.profile_photo_url}
                     alt=""
                   />
                 )}
 
-                <div className={common.info}>
+                <div className={content.info}>
                   <div className={styles.nameRow}>
                     <h2 className={styles.botName}>{bot.name}</h2>
 
@@ -63,7 +65,7 @@ export function SearchPage() {
                     )}
                   </div>
 
-                  <p className={common.username}>@{bot.username}</p>
+                  <p className={content.username}>@{bot.username}</p>
                   {bot.mau !== null && (
                   <p className={styles.mau}>
                     {formatMau(bot.mau)} активных пользователей
@@ -77,11 +79,11 @@ export function SearchPage() {
               )}
 
               {bot.subcategories.length > 0 && (
-                <div className={common.categoryList}>
+                <div className={content.categoryList}>
                   {bot.subcategories.map((subcategory) => (
                     <span
                       key={subcategory.id}
-                      className={common.category}
+                      className={content.category}
                     >
                       {subcategory.name}
                     </span>

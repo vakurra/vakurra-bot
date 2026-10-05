@@ -56,15 +56,3 @@
 .mutedExample {
   color: var(--app-text-muted);
 }
-
-.accentExample {
-  width: 100%;
-  padding: 14px 20px;
-  border: 0;
-  border-radius: 14px;
-  background: var(--app-surface);
-  color: var(--app-text-accent);
-  font: inherit;
-  font-weight: 600;
-  -webkit-tap-highlight-color: transparent;
-}

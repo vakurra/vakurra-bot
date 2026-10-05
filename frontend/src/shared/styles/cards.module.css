@@ -1,0 +1,47 @@
+.surfaceCard {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--app-border);
+  border-radius: 24px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.botCard {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--app-border);
+  border-radius: 20px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
+.rejection {
+  display: grid;
+  gap: 5px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--app-bg);
+}
+
+.rejectionTitle,
+.rejectionReason {
+  margin: 0;
+}
+
+.rejectionTitle {
+  color: var(--app-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rejectionReason {
+  color: var(--app-text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}

@@ -1,6 +1,6 @@
 import type { User } from "../../app/App";
 import { PageHeader } from "../../shared/ui/PageHeader";
-import common from "../../shared/styles/common.module.css";
+import layout from "../../shared/styles/layout.module.css";
 
 import { MyBotsSection } from "./MyBotsSection";
 import { AdminModerationSection } from "./AdminModerationSection";
@@ -16,7 +16,7 @@ export function ProfilePage({ user }: ProfilePageProps) {
     : user?.first_name ?? "Пользователь";
 
   return (
-    <div className={common.page}>
+    <div className={layout.page}>
       <PageHeader title={displayName} />
 
       <MyBotsSection />

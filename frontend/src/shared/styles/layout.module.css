@@ -1,0 +1,32 @@
+.page {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: 130px 20px 120px;
+}
+
+.pageTop {
+  padding-top: 50px;
+}
+
+.section {
+  display: grid;
+  gap: 16px;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.message {
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 15px;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+}

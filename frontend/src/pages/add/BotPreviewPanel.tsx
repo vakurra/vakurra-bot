@@ -1,5 +1,7 @@
 import type { BotPreview, Category } from "../../shared/api/client";
-import common from "../../shared/styles/common.module.css";
+import buttons from "../../shared/styles/buttons.module.css";
+import cards from "../../shared/styles/cards.module.css";
+import content from "../../shared/styles/content.module.css";
 
 import { CategorySelector } from "./CategorySelector";
 import styles from "./AddPage.module.css";
@@ -30,10 +32,10 @@ export function BotPreviewPanel({
   onSubmit,
 }: BotPreviewPanelProps) {
   return (
-    <section className={common.surfaceCard}>
+    <section className={cards.surfaceCard}>
       {preview.profile_photo_url && (
         <img
-          className={common.avatarLarge}
+          className={content.avatarLarge}
           src={preview.profile_photo_url}
           alt=""
         />
@@ -77,7 +79,7 @@ export function BotPreviewPanel({
       {error && <p className={styles.error}>{error}</p>}
 
       <button
-        className={styles.button}
+        className={buttons.button}
         type="button"
         disabled={selectedIds.length === 0 || isCategoriesLoading || isSubmitting}
         onClick={onSubmit}

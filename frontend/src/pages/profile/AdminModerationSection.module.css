@@ -24,47 +24,6 @@
   grid-template-columns: auto 1fr;
 }
 
-.approveButton,
-.rejectButton,
-.cancelButton,
-.confirmRejectButton {
-  padding: 8px 12px;
-  border-radius: 12px;
-  color: var(--app-text);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.approveButton,
-.rejectButton,
-.confirmRejectButton {
-  border: 0;
-}
-
-.approveButton {
-  background: var(--app-button);
-}
-
-.rejectButton,
-.confirmRejectButton {
-  background: var(--app-button-danger);
-}
-
-.cancelButton {
-  border: 1px solid var(--app-border);
-  background: var(--app-bg);
-}
-
-.approveButton:disabled,
-.rejectButton:disabled,
-.cancelButton:disabled,
-.confirmRejectButton:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
 .rejectionForm {
   display: grid;
   gap: 10px;

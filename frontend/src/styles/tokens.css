@@ -29,13 +29,17 @@
   );
 
   --app-button:
-    radial-gradient(circle at 20% 20%, #11b8b3, transparent 45%),
+    radial-gradient(circle at 20% 20%, #0c0a0e, transparent 45%),
+    radial-gradient(circle at 80% 80%, #0e0d12, transparent 50%),
+    #07080a;
+  --app-button-accent:
+    radial-gradient(circle at 20% 20%, #11a9a4, transparent 45%),
     radial-gradient(circle at 80% 80%, #923cbe, transparent 50%),
-  #2f5ce3;
+    #2750ca;
   --app-button-danger:
-  radial-gradient(circle at 20% 20%, #c76b6b, transparent 45%),
-  radial-gradient(circle at 80% 80%, #b7274d, transparent 50%),
-  #aa203c;
+    radial-gradient(circle at 20% 20%, #b56161, transparent 45%),
+    radial-gradient(circle at 80% 80%, #b7274d, transparent 50%),
+    #941c34;
 
   --app-border: #36383a;
   --app-border-accent: #2d7cc2;

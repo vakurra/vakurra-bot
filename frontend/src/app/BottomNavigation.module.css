@@ -40,6 +40,10 @@
   color: var(--app-text-accent);
 }
 
+.item:active {
+  transform: none;
+}
+
 .featured {
   font-weight: 1000;
 }

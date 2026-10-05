@@ -2,7 +2,9 @@ import { useState } from "react";
 
 import { PageHeader } from "../../shared/ui/PageHeader";
 import { api, type BotPreview, type Category } from "../../shared/api/client";
-import common from "../../shared/styles/common.module.css";
+import buttons from "../../shared/styles/buttons.module.css";
+import cards from "../../shared/styles/cards.module.css";
+import layout from "../../shared/styles/layout.module.css";
 
 import { BotPreviewPanel } from "./BotPreviewPanel";
 import styles from "./AddPage.module.css";
@@ -92,11 +94,11 @@ export function AddPage() {
   }
 
   return (
-    <div className={common.page}>
+    <div className={layout.page}>
       <PageHeader title="Добавить бота" />
 
       {isSubmitted ? (
-        <section className={common.surfaceCard}>
+        <section className={cards.surfaceCard}>
           <h2 className={styles.title}>Заявка отправлена</h2>
           <p className={styles.description}>
             Бот отправлен на модерацию. После проверки он появится в каталоге.
@@ -116,7 +118,7 @@ export function AddPage() {
           onSubmit={handleSubmit}
         />
       ) : (
-        <section className={common.surfaceCard}>
+        <section className={cards.surfaceCard}>
           <h2 className={styles.title}>Добавьте своего бота</h2>
           <p className={styles.description}>
             Укажите username Telegram-бота, которого хотите добавить в каталог.
@@ -140,7 +142,7 @@ export function AddPage() {
           {error && <p className={styles.error}>{error}</p>}
 
           <button
-            className={styles.button}
+            className={buttons.button}
             type="button"
             disabled={!username.trim() || isLoading}
             onClick={handlePreview}

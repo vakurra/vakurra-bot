@@ -38,6 +38,11 @@ button:active {
   transform: scale(0.96);
 }
 
+button:disabled {
+  cursor: default;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

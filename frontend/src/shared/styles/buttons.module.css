@@ -1,0 +1,63 @@
+.primaryButton,
+.dangerButton,
+.secondaryButton {
+  color: var(--app-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  background: var(--app-button);
+  color: var(--app-text-accent);
+}
+
+.accentButton {
+  width: 100%;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-surface);
+  color: var(--app-text-accent);
+  font: inherit;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.primaryButton,
+.dangerButton,
+.secondaryButton {
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.primaryButton,
+.dangerButton {
+  border: 0;
+}
+
+.primaryButton {
+  background: var(--app-button-accent);
+}
+
+.dangerButton {
+  background: var(--app-button-danger);
+}
+
+.secondaryButton {
+  border: 1px solid var(--app-border);
+  background: var(--app-bg);
+}
+
+.button:disabled,
+.primaryButton:disabled,
+.dangerButton:disabled,
+.secondaryButton:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
