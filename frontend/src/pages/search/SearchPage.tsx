@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { PageHeader } from "../../shared/ui/PageHeader";
 import { api, type CatalogBot } from "../../shared/api/client";
 import layout from "../../shared/styles/layout.module.css";
+import buttons from "../../shared/styles/buttons.module.css";
+import styles from "./SearchPage.module.css";
 
 import { BotCatalogCard } from "./BotCatalogCard";
 import { SearchFilters } from "./SearchFilters";
 import type { SearchCategory } from "./searchUtils";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 3;
 
 export function SearchPage() {
   const [bots, setBots] = useState<CatalogBot[]>([]);
@@ -183,6 +185,7 @@ export function SearchPage() {
 
           {hasMore && (
             <button
+              className={`${buttons.button} ${styles.loadMoreButton}`}
               type="button"
               onClick={loadMore}
               disabled={isLoadingMore}

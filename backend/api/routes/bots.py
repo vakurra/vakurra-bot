@@ -1,5 +1,5 @@
 from aiogram.types import User as TelegramUser
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel
 
 from backend.api.dependencies.auth import get_telegram_user
@@ -112,7 +112,7 @@ async def _load_bot_data(request: Request, username: str) -> dict:
 @router.get("", response_model=BotCatalogPageResponse)
 async def get_catalog_bots(
     search: str | None = None,
-    subcategory_ids: list[int] | None = None,
+    subcategory_ids: list[int] | None = Query(default=None),
     limit: int = 25,
     offset: int = 0,
 ) -> BotCatalogPageResponse:
