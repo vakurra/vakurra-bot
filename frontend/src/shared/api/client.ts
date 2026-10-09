@@ -95,6 +95,11 @@ export type MyBot = {
   rejection_reason: string | null;
 };
 
+export type MyBotsResponse = {
+  items: MyBot[];
+  has_more: boolean;
+};
+
 export type AdminBot = {
   id: number;
   username: string;
@@ -103,6 +108,11 @@ export type AdminBot = {
   submitted_by: number;
   status: string;
   subcategories: Subcategory[];
+};
+
+export type AdminBotsResponse = {
+  items: AdminBot[];
+  has_more: boolean;
 };
 
 export type Subcategory = {
@@ -181,15 +191,43 @@ export const api = {
       },
     }),
 
-  myBots: () =>
-    request<MyBot[]>(`${apiPath}/me/bots`, {
-      authenticated: true,
-    }),
+  myBots: (params: { limit?: number; offset?: number } = {}) => {
+    const query = new URLSearchParams();
 
-  adminBots: () =>
-    request<AdminBot[]>(`${apiPath}/admin/bots`, {
-      authenticated: true,
-    }),
+    if (params.limit !== undefined) {
+      query.set("limit", String(params.limit));
+    }
+
+    if (params.offset !== undefined) {
+      query.set("offset", String(params.offset));
+    }
+
+    const queryString = query.toString();
+
+    return request<MyBotsResponse>(
+      `${apiPath}/me/bots${queryString ? `?${queryString}` : ""}`,
+      { authenticated: true },
+    );
+  },
+
+  adminBots: (params: { limit?: number; offset?: number } = {}) => {
+    const query = new URLSearchParams();
+
+    if (params.limit !== undefined) {
+      query.set("limit", String(params.limit));
+    }
+
+    if (params.offset !== undefined) {
+      query.set("offset", String(params.offset));
+    }
+
+    const queryString = query.toString();
+
+    return request<AdminBotsResponse>(
+      `${apiPath}/admin/bots${queryString ? `?${queryString}` : ""}`,
+      { authenticated: true },
+    );
+  },
 
   approveBot: (botId: number) =>
     request<{ id: number; status: string }>(

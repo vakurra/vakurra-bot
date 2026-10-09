@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 
 from backend.api.dependencies.admin import get_admin_user
@@ -19,31 +19,39 @@ class BotRejectRequest(BaseModel):
 
 @router.get("/bots")
 async def get_admin_bots(
+    limit: int = Query(default=25, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     admin_user: User = Depends(get_admin_user),
-) -> list[dict]:
+) -> dict:
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
 
-        bots = await bot_service.get_pending_with_subcategories()
+        bots, has_more = await bot_service.get_pending_page(
+            limit=limit,
+            offset=offset,
+        )
 
-    return [
-        {
-            "id": bot.id,
-            "username": bot.username,
-            "name": bot.name,
-            "profile_photo_url": bot.profile_photo_url,
-            "submitted_by": bot.submitted_by,
-            "status": bot.status,
-            "subcategories": [
-                {
-                    "id": subcategory.id,
-                    "name": subcategory.name,
-                }
-                for subcategory in subcategories
-            ],
-        }
-        for bot, subcategories in bots
-    ]
+    return {
+        "items": [
+            {
+                "id": bot.id,
+                "username": bot.username,
+                "name": bot.name,
+                "profile_photo_url": bot.profile_photo_url,
+                "submitted_by": bot.submitted_by,
+                "status": bot.status,
+                "subcategories": [
+                    {
+                        "id": subcategory.id,
+                        "name": subcategory.name,
+                    }
+                    for subcategory in subcategories
+                ],
+            }
+            for bot, subcategories in bots
+        ],
+        "has_more": has_more,
+    }
 
 
 @router.post("/bots/{bot_id}/approve")

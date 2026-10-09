@@ -10,7 +10,7 @@ import { BotCatalogCard } from "./BotCatalogCard";
 import { SearchFilters } from "./SearchFilters";
 import type { SearchCategory } from "./searchUtils";
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 10;
 
 export function SearchPage() {
   const [bots, setBots] = useState<CatalogBot[]>([]);

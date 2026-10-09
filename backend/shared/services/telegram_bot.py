@@ -134,6 +134,69 @@ class TelegramBotService:
     ) -> list[tuple[TelegramBot, list[Subcategory]]]:
         return await self._get_with_subcategories("pending", descending=False)
 
+    async def get_pending_page(
+        self,
+        *,
+        limit: int,
+        offset: int,
+    ) -> tuple[list[tuple[TelegramBot, list[Subcategory]]], bool]:
+        """Return one page of pending bots with their subcategories."""
+
+        result = await self.session.scalars(
+            select(TelegramBot.id)
+            .where(TelegramBot.status == "pending")
+            .order_by(
+                TelegramBot.created_at.asc(),
+                TelegramBot.id.asc(),
+            )
+            .offset(offset)
+            .limit(limit + 1)
+        )
+
+        bot_ids = list(result.all())
+
+        has_more = len(bot_ids) > limit
+        page_bot_ids = bot_ids[:limit]
+
+        if not page_bot_ids:
+            return [], has_more
+
+        result = await self.session.execute(
+            select(TelegramBot, Subcategory, Category)
+            .join(
+                TelegramBotCategory,
+                TelegramBotCategory.bot_id == TelegramBot.id,
+            )
+            .join(
+                Subcategory,
+                Subcategory.id == TelegramBotCategory.subcategory_id,
+            )
+            .join(
+                Category,
+                Category.id == Subcategory.category_id,
+            )
+            .where(TelegramBot.id.in_(page_bot_ids))
+            .order_by(
+                TelegramBot.created_at.asc(),
+                TelegramBot.id.asc(),
+                Subcategory.id.asc(),
+            )
+        )
+
+        bots_by_id: dict[int, tuple[TelegramBot, list[Subcategory]]] = {}
+
+        for bot, subcategory, category in result.all():
+            subcategory.category = category
+            bots_by_id.setdefault(bot.id, (bot, []))[1].append(subcategory)
+
+        bots = [
+            bots_by_id[bot_id]
+            for bot_id in page_bot_ids
+            if bot_id in bots_by_id
+        ]
+
+        return bots, has_more
+
     async def get_by_submitted_by(
         self,
         user_id: int,
@@ -144,6 +207,32 @@ class TelegramBotService:
             .order_by(TelegramBot.created_at.desc())
         )
         return list(result.scalars().all())
+
+    async def get_submitted_by_page(
+        self,
+        *,
+        user_id: int,
+        limit: int,
+        offset: int,
+    ) -> tuple[list[TelegramBot], bool]:
+        """Return one page of bots submitted by a user."""
+
+        result = await self.session.scalars(
+            select(TelegramBot)
+            .where(TelegramBot.submitted_by == user_id)
+            .order_by(
+                TelegramBot.created_at.desc(),
+                TelegramBot.id.desc(),
+            )
+            .offset(offset)
+            .limit(limit + 1)
+        )
+
+        bots = list(result.all())
+
+        has_more = len(bots) > limit
+
+        return bots[:limit], has_more
 
     async def get_subcategories_by_ids(
         self,
