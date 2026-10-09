@@ -26,10 +26,31 @@
   object-fit: cover;
 }
 
+.avatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  background-color: var(--app-bg);
+  color: var(--app-text-accent);
+
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
 .info {
   min-width: 0;
   flex: 1;
   overflow: hidden;
+}
+
+.identityTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
 .botName {

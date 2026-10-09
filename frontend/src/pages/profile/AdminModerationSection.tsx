@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { api, type AdminBot } from "../../shared/api/client";
+import { BotIdentity } from "../../shared/ui/BotIdentity";
 import buttons from "../../shared/styles/buttons.module.css";
 import cards from "../../shared/styles/cards.module.css";
 import content from "../../shared/styles/content.module.css";
@@ -177,27 +178,23 @@ export function AdminModerationSection() {
 
               return (
                 <article key={bot.id} className={cards.botCard}>
-                  <div className={content.botMain}>
-                    {bot.profile_photo_url && (
-                      <img
-                        className={content.avatar}
-                        src={bot.profile_photo_url}
-                        alt=""
-                      />
-                    )}
-
-                    <div className={content.info}>
-                      <h3 className={content.botName}>{bot.name}</h3>
-
-                      <p className={content.username}>
-                        @{bot.username}
-                      </p>
-
-                      <p className={styles.submittedBy}>
-                        Пользователь: {bot.submitted_by}
-                      </p>
-                    </div>
-                  </div>
+                  <BotIdentity
+                    name={<h3 className={content.botName}>{bot.name}</h3>}
+                    username={bot.username}
+                    profilePhotoUrl={bot.profile_photo_url}
+                    fallbackLetter={bot.name}
+                    meta={
+                      <div className={styles.submittedBy}>
+                        <p>
+                          User:{" "}
+                          {bot.submitted_by_username
+                            ? `@${bot.submitted_by_username}`
+                            : bot.submitted_by_first_name || "Без имени"}{" "}
+                          (ID: {bot.submitted_by})
+                        </p>
+                      </div>
+                    }
+                  />
 
                   {bot.subcategories.length > 0 && (
                     <div className={styles.categories}>

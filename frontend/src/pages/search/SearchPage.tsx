@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { PageHeader } from "../../shared/ui/PageHeader";
-import { api, type CatalogBot } from "../../shared/api/client";
+import { usePaginatedList } from "../../shared/hooks/usePaginatedList";
+import { api } from "../../shared/api/client";
 import layout from "../../shared/styles/layout.module.css";
 import buttons from "../../shared/styles/buttons.module.css";
 import styles from "./SearchPage.module.css";
@@ -13,12 +14,7 @@ import type { SearchCategory } from "./searchUtils";
 const PAGE_SIZE = 10;
 
 export function SearchPage() {
-  const [bots, setBots] = useState<CatalogBot[]>([]);
   const [categories, setCategories] = useState<SearchCategory[]>([]);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(false);
 
   const [expandedUsername, setExpandedUsername] = useState<string | null>(
     null,
@@ -56,70 +52,31 @@ export function SearchPage() {
     loadCategories();
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadBots() {
-      setIsLoading(true);
-      setExpandedUsername(null);
-
-      try {
-        const result = await api.catalogBots({
-          search: searchQuery,
-          subcategoryIds: selectedSubcategoryIds,
-          limit: PAGE_SIZE,
-          offset: 0,
-        });
-
-        if (cancelled) {
-          return;
-        }
-
-        setBots(result.items);
-        setHasMore(result.has_more);
-      } catch (error) {
-        if (!cancelled) {
-          console.error("Failed to load catalog bots:", error);
-          setBots([]);
-          setHasMore(false);
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadBots();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [searchQuery, selectedSubcategoryIds]);
-
-  async function loadMore() {
-    if (isLoadingMore || !hasMore) {
-      return;
-    }
-
-    setIsLoadingMore(true);
-
-    try {
-      const result = await api.catalogBots({
+  const loadBots = useCallback(
+    ({ limit, offset }: { limit: number; offset: number }) =>
+      api.catalogBots({
         search: searchQuery,
         subcategoryIds: selectedSubcategoryIds,
-        limit: PAGE_SIZE,
-        offset: bots.length,
-      });
+        limit,
+        offset,
+      }),
+    [searchQuery, selectedSubcategoryIds],
+  );
 
-      setBots((current) => [...current, ...result.items]);
-      setHasMore(result.has_more);
-    } catch (error) {
-      console.error("Failed to load more catalog bots:", error);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  }
+  const {
+    items: bots,
+    isLoading,
+    isLoadingMore,
+    hasMore,
+    loadMore,
+  } = usePaginatedList({
+    pageSize: PAGE_SIZE,
+    loadPage: loadBots,
+  });
+
+  useEffect(() => {
+    setExpandedUsername(null);
+  }, [searchQuery, selectedSubcategoryIds]);
 
   function toggleBot(username: string) {
     setExpandedUsername((current) =>

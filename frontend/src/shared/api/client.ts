@@ -106,6 +106,8 @@ export type AdminBot = {
   name: string;
   profile_photo_url: string | null;
   submitted_by: number;
+  submitted_by_username: string | null;
+  submitted_by_first_name: string | null;
   status: string;
   subcategories: Subcategory[];
 };

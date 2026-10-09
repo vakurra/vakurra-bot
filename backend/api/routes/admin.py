@@ -5,6 +5,7 @@ from backend.api.dependencies.admin import get_admin_user
 from backend.shared.database.models import User
 from backend.shared.database.session import SessionLocal
 from backend.shared.services.telegram_bot import TelegramBotService
+from backend.shared.services.user import UserService
 
 
 router = APIRouter(
@@ -25,11 +26,20 @@ async def get_admin_bots(
 ) -> dict:
     async with SessionLocal() as session:
         bot_service = TelegramBotService(session)
+        user_service = UserService(session)
 
         bots, has_more = await bot_service.get_pending_page(
             limit=limit,
             offset=offset,
         )
+
+        submitted_by_ids = {bot.submitted_by for bot, _ in bots}
+        users = {}
+
+        for user_id in submitted_by_ids:
+            user = await user_service.get_by_id(user_id)
+            if user is not None:
+                users[user_id] = user
 
     return {
         "items": [
@@ -39,6 +49,16 @@ async def get_admin_bots(
                 "name": bot.name,
                 "profile_photo_url": bot.profile_photo_url,
                 "submitted_by": bot.submitted_by,
+                "submitted_by_username": (
+                    users[bot.submitted_by].username
+                    if bot.submitted_by in users
+                    else None
+                ),
+                "submitted_by_first_name": (
+                    users[bot.submitted_by].first_name
+                    if bot.submitted_by in users
+                    else None
+                ),
                 "status": bot.status,
                 "subcategories": [
                     {
@@ -52,6 +72,7 @@ async def get_admin_bots(
         ],
         "has_more": has_more,
     }
+    
 
 
 @router.post("/bots/{bot_id}/approve")
